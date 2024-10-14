@@ -1,4 +1,10 @@
 import time
+import sys
+
+path = input("Enter the path to the folder containing your `GridPrimeLabeling.py` file: ")
+version = path.split("/")[-1] #inferring version number is the last directory
+#adding folder of current test file
+sys.path.insert(0, path)
 from GridPrimeLabeling import generateCoprimeMatrix, checkMatrix
 
 def stressTest(maxSize, numTrials, timeout):
@@ -55,17 +61,22 @@ def stressTest(maxSize, numTrials, timeout):
     return results
 
 def printSummary(results):
-    print("\nSummary:")
-    print("Size | Successes | Failures | Avg Time (s) | Min Time (s) | Max Time (s)")
-    print("-"*70)
-    for size, data in results.items():
-        print(f"{size:4d} | {data['successes']:9d} | {data['failures']:8d} | {data['avgTime']:12.4f} | {data['minTime']:12.4f} | {data['maxTime']:12.4f}")
+    with open(f"../../Data/{version}/RigorousPythonData") as file:
+        file.write("\nSummary:\n")
+        print("\nSummary:")
+        file.write("Size | Successes | Failures | Avg Time (s) | Min Time (s) | Max Time (s)\n")
+        print("Size | Successes | Failures | Avg Time (s) | Min Time (s) | Max Time (s)")
+        file.write(f"{"-"*70}\n")
+        print("-"*70)
+        for size, data in results.items():
+            file.write(f"{size:4d} | {data['successes']:9d} | {data['failures']:8d} | {data['avgTime']:12.4f} | {data['minTime']:12.4f} | {data['maxTime']:12.4f}\n")
+            print(f"{size:4d} | {data['successes']:9d} | {data['failures']:8d} | {data['avgTime']:12.4f} | {data['minTime']:12.4f} | {data['maxTime']:12.4f}")
 
 
 if __name__ == "__main__":
     maxSize = 20 #max matrix size to test
-    numTrials = 10 #number of trials for each size
-    timeout = 99999 #max number of seconds to generate a single system before giving up
+    numTrials = 25 #number of trials for each size
+    timeout = 256 #max number of seconds to generate a single system before giving up
 
     results = stressTest(maxSize, numTrials, timeout)
     printSummary(results)

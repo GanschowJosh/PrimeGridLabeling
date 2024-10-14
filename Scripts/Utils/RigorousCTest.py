@@ -3,7 +3,7 @@ import time
 
 def runCProgram(n, m, timeout):
     try:
-        process = subprocess.Popen(['./coprimeMatrixGenerator'],
+        process = subprocess.Popen(['../1.0/coprimeMatrixGenerator'],
                                    stdin=subprocess.PIPE, 
                                    stdout=subprocess.PIPE, 
                                    stderr=subprocess.PIPE,
