@@ -34,7 +34,7 @@ def isValid(matrix, i, j, value):
     neighbors = getNeighbors(matrix, i, j)
     return all(areCoprime(value, neighbor) for neighbor in neighbors if neighbor != 0)
 
-def generateCoprimeMatrix(n, m):
+def generateCoprimeMatrix_old(n, m):
     matrix = [[0 for _ in range(m)] for _ in range(n)]
     numbers = list(range(1, n*m + 1))
     random.shuffle(numbers)
@@ -48,32 +48,42 @@ def generateCoprimeMatrix(n, m):
                     break
             else:
                 # If no valid number is found, start over
-                return generateCoprimeMatrix(n, m)
+                return generateCoprimeMatrix_old(n, m)
 
     return matrix
-def generateCoprimeMatrix_modified(n, m,maxfactors):
-    matrix = [[0 for _ in range(m)] for _ in range(n)]
-    numbers = list(range(2,n*m+1))
-    random.shuffle(numbers)
-    # move number with max factors to the beginning and 1 to the end
-    numbers.remove(maxfactors)
-    numbers.insert(0, maxfactors)
-    numbers.append(1)
+
+def generateCoprimeMatrix(n, m):
+    maxFactors = 1
+    for i in range(1,n*m+1):
+        if count_unique_factors(i) > count_unique_factors(maxFactors):
+            maxFactors = i
+
+    def generator(n, m, maxFactors):
+        matrix = [[0 for _ in range(m)] for _ in range(n)]
+        numbers = list(range(2,n*m+1))
+        random.shuffle(numbers)
+        # move number with max factors to the beginning and 1 to the end
+        numbers.remove(maxFactors)
+        numbers.insert(0, maxFactors)
+        numbers.append(1)
 
 
 
-    for i in range(n):
-        for j in range(m):
-            for num in numbers:
-                if isValid(matrix, i, j, num):
-                    matrix[i][j] = num
-                    numbers.remove(num)
-                    break
-            else:
-                # If no valid number is found, start over
-                return generateCoprimeMatrix_modified(n, m,maxfactors)
+        for i in range(n):
+            for j in range(m):
+                for num in numbers:
+                    if isValid(matrix, i, j, num):
+                        matrix[i][j] = num
+                        numbers.remove(num)
+                        break
+                else:
+                    # If no valid number is found, start over
+                    return generator(n, m, maxFactors)
 
-    return matrix
+        return matrix
+
+    generator(n, m, maxFactors)
+
 def printMatrix(matrix):
     for row in matrix:
         print(" ".join(f"{num:3d}" for num in row))
@@ -100,21 +110,16 @@ if __name__ == "__main__":
     #original algorithm
     for i in range(epoch):
         NOW = time.time()
-        generateCoprimeMatrix(n, m)
+        generateCoprimeMatrix_old(n, m)
         total_time+=time.time()-NOW
         print("|",end="")
     print()
     print(f"Original algorithm average for {n}x{m} grid {total_time / epoch} seconds ({epoch} epochs)")
 
-    #weighted algorithm
-    total_time=0
-    max_f = 1
-    for i in range(1,n*m+1):
-        if count_unique_factors(i) > count_unique_factors(max_f):
-            max_f = i
+    total_time = 0
     for i in range(epoch):
         NOW = time.time()
-        generateCoprimeMatrix_modified(n, m,max_f)
+        generateCoprimeMatrix(n, m)
         total_time+=time.time()-NOW
         print("|", end="")
     print()
