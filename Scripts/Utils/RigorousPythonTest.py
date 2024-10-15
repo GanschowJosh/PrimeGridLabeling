@@ -3,9 +3,20 @@ import sys
 
 path = input("Enter the path to the folder containing your `GridPrimeLabeling.py` file: ")
 version = path.split("/")[-1] #inferring version number is the last directory
+outputPath = f"./StressTestData {time.strftime("%Y-%m-%d %H.%M.%S")}" #output path of the file, will depend on where the script is run
+
 #adding folder of current test file
 sys.path.insert(0, path)
 from GridPrimeLabeling import generateCoprimeMatrix, checkMatrix
+
+#detecting file errors before stress testing
+try:
+    with open(outputPath, "w+") as file:
+        pass
+except Exception as e:
+    print(e)
+    sys.exit()
+
 
 def stressTest(maxSize, numTrials, timeout):
     results = {}
@@ -61,7 +72,7 @@ def stressTest(maxSize, numTrials, timeout):
     return results
 
 def printSummary(results):
-    with open(f"../../Data/{version}/RigorousPythonData", "w") as file:
+    with open(f"./2.0/RigorousPythonData", "w+") as file:
         file.write("\nSummary:\n")
         print("\nSummary:")
         file.write("Size | Successes | Failures | Avg Time (s) | Min Time (s) | Max Time (s)\n")
@@ -75,8 +86,8 @@ def printSummary(results):
 
 if __name__ == "__main__":
     maxSize = 20 #max matrix size to test
-    numTrials = 25 #number of trials for each size
-    timeout = 256 #max number of seconds to generate a single system before giving up
+    numTrials = 50 #number of trials for each size
+    timeout = 99999 #max number of seconds to generate a single system before giving up
 
     results = stressTest(maxSize, numTrials, timeout)
     printSummary(results)
