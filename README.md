@@ -1,6 +1,7 @@
 # Prime Grid Labeling
-Description: generate an n by m matrix numbered 1 to n*m where each item in the matrix is only neighbored by numbers that are coprime to the item.
+Description: generate an n by m matrix numbered 1 to n*m where each item in the matrix is only neighbored by numbers that are coprime to the item. This can be easily mapped to the problem of finding a prime labeling of a graph in graph theory.
 
+Learn more about prime labeling of graphs: [Link to a paper](https://www.rroij.com/open-access/some-prime-labeling-of-graph.pdf)
 ## Repo Structure
 - `Scripts` folder includes all the code used. 
     - In version `1.0` the python program is a greedy algorithm that recursively shuffles a list of numbers 1 to (n*m) and tries to place them in a locally optimal way. If there are no available numbers in the list, it calls the function again and reshuffles.
