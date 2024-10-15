@@ -61,7 +61,7 @@ def stressTest(maxSize, numTrials, timeout):
     return results
 
 def printSummary(results):
-    with open(f"../../Data/{version}/RigorousPythonData") as file:
+    with open(f"../../Data/{version}/RigorousPythonData", "w") as file:
         file.write("\nSummary:\n")
         print("\nSummary:")
         file.write("Size | Successes | Failures | Avg Time (s) | Min Time (s) | Max Time (s)\n")
