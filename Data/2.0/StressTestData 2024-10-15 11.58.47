@@ -96,12 +96,6 @@ Testing 17x17 matrix:
 
 Testing 18x18 matrix:
   Successful generations: 50/50
-  Average time: 10.8753s
-  Min time: 0.0560s
-  Max time: 48.4812s
-
-Testing 18x18 matrix:
-  Successful generations: 50/50
   Average time: 120.9476s
   Min time: 2.7616s
   Max time: 711.8498s
