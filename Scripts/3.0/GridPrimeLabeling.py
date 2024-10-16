@@ -82,7 +82,7 @@ def generateCoprimeMatrix(n, m):
 
         return matrix
 
-    generator(n, m, maxFactors)
+    return generator(n, m, maxFactors)
 
 def printMatrix(matrix):
     for row in matrix:
