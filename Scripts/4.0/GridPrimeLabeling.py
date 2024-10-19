@@ -15,55 +15,56 @@ def generateCoprimeMatrix(*dims: int) -> MatrixGraph:
     :return:
     """
 
-    nums = list(reversed(sorted(range(prod(dims)), key=count_unique_factors)))
+    nums = list(reversed(sorted(range(1, prod(dims)+1), key=count_unique_factors)))
     matrix = MatrixGraph(*dims)
 
-    def recurse(g: Graph, nums: list[int]) -> Graph | None:
+    def recurse(g: Graph, nums: list[int], depth=0) -> Graph | None:
         """
-        Given a (empty or partially labeled) Graph object and list of numbers yet to be labeled,
-        recursively attempts to generate a prime labeling, returning
-        None if no answer is found
+        Given an (empty or partially labeled) Graph object and a list of numbers yet to be labeled,
+        recursively attempts to generate a prime labeling, returning None if no answer is found.
         """
-
         # get every unlabeled node in order of highest degree -> smallest degree
-        # (It's easier to label high degree nodes early on)
         nodes = (node for node in reversed(g.nodes_by_degree()) if node.get_value() is None)
 
         for node in nodes:
-            for num in nums:
+            for i, num in enumerate(nums):
                 neighbor_values = (neighbor.get_value() for neighbor in node.get_neighbors())
 
+                # Check if the number is coprime with all neighbors
                 for neighbor_value in neighbor_values:
                     if neighbor_value is None:
                         continue
-                    if not areCoprime(neighbor_value, num):
+                    if not coprime(neighbor_value, num):
                         break
                 else:
                     # num successfully applied to graph
-                    print(f"\nSet value: {num}\n")#DEBUG
                     node.set_value(num)
-                    print_2d_matrix_graph(g)#DEBUG
-                    nums.remove(num)
+                    nums.pop(i)  # Remove num from the list
 
-                    # base case
+                    # base case: if the graph is full, return the result
                     if g.is_full():
                         return g
 
-                    next_r = recurse(g, nums)
+                    # recursive call to continue filling the graph
+                    next_r = recurse(g, nums, depth + 1)
 
                     if next_r is None:
+                        # backtrack: undo the number assignment and restore it to the pool
                         node.set_value(None)
+                        nums.insert(i, num)
                         continue
                     else:
                         return next_r
 
+        # If no valid configuration is found, return None to trigger backtracking
         return None
 
     return recurse(matrix, nums)
 
+
 if __name__ == "__main__":
 
-    n, m = 5, 1
+    n, m = 6, 6
 
     total_time = 0
     epoch = 30
