@@ -4,6 +4,7 @@
 // re-impliment Node.coprimes as linked list for dynamic allocation;
 // have output go to file rather than std out
 // have main josh program read in coprimes from file
+// split into head files
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,7 +18,13 @@ typedef struct Node {
     struct Node* coprimes[COPRIME_ARRAY_LENGTH];
 } Node;
 
-// Returns the greatest common divisor for integers a and b
+/**
+ <Returns the greatest common divisor for integers a and b.>
+ 
+ @param a first integer
+ @param b second integer
+ @return the greatest common divisor for integers a and b.
+ */
 int gcd(int a, int b) {
     int maxNum;
 
