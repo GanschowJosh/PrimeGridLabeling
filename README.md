@@ -15,6 +15,9 @@ Learn more about prime labeling of graphs: [Link to a paper](https://www.rroij.c
     - The `Utils` folder contains the scripts made to stress test the different versions of the script. This data gets put into a file in a directory that corresponds to the provided when the script is run.
 - `Data` folder includes data from stress tests of the versions and, when warranted, new write-ups to determine exactly how much faster a new version is than the previous.
 
+## Usage
+Note on the usage of the testing file: when running the testing file, navigating to the parent directory (the main `Prime Labeling of a Grid`) and running `python -m Tests.PythonTesting` in the command line is the recommended usage. This allows the relative file paths to work properly and the `-m` flag for Python runs the specified library module as a script. The program will output the test data file to the parent folder.
+
 ## Acknowledgments
 ### Contributors:
 1. [John McMahon](https://github.com/John-A-McMahon)
