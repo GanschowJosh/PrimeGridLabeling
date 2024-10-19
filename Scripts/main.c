@@ -112,7 +112,7 @@ Node* generateGraph(int max) {
     return head;
 }
 
-void printNode(Node* node, char* verbosity) {
+void printNodeLegacy(Node* node, char* verbosity) {
     printf("%d\n", (*node).value);
     if (*verbosity == 'v') {
         for (int i = 0; i < (*node).numberOfCoprimes; i++) {
@@ -124,25 +124,37 @@ void printNode(Node* node, char* verbosity) {
     }
 }
 
-void printGraph(Node* node, char* verbosity) {
+void printNode(Node* node, FILE* outFile) {
+    fprintf(outFile, "%d:", (*node).value);
+    for (int i = 0; i < (*node).numberOfCoprimes; i++)
+        fprintf(outFile, " %d", (*(*node).coprimes[i]).value);
+    fprintf(outFile, "\n");
+}
+
+void printGraph(Node* node, FILE* outFile) {
     while (node != NULL) {
-        printNode(node, verbosity);
+        printNode(node, outFile);
         node = (*node).next;
     }
 }
 
 int main() {
     int max;
-    char verbosity;
+    
+    FILE *outFile = fopen("../Data/linkedCoprimes.txt", "w");
+    if (outFile == NULL) {
+        printf("Error opening file!\n");
+        return 1;
+    }
 
     printf("Enter max: ");
     scanf("%d", &max);
 
-    printf("Print nodes (p), print nodes with coprimes (v), no output (n): ");
-    scanf(" %c", &verbosity);
-
     Node* head = generateGraph(max);
 
-    if (verbosity == 'p' || verbosity == 'v')
-        printGraph(head, &verbosity);
+    printGraph(head, outFile);
+
+    printf("Coprime graph written to: ../Data/linkedCoprimes.txt\n");
+
+    fclose(outFile);
 }
