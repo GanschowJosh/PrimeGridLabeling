@@ -1,9 +1,7 @@
 import random
 import sys
-import math
 import time
-from graph import MatrixGraph
-
+from Scripts.graph import MatrixGraph, print_2d_matrix_graph
 
 sys.setrecursionlimit(1000000000)
 
@@ -14,18 +12,20 @@ def count_unique_factors(n: int) -> int:
     :param n:
     :return:
     """
-    count=0
-    for i in range(2,n):
-        if n%i==0:
-           count+=1
-           while n%i==0:
-               n=n//i
+    count = 0
+    for i in range(2, n):
+        if n % i == 0:
+            count += 1
+            while n % i == 0:
+                n = n // i
     return count
+
 
 def gcd(a, b):
     while b:
         a, b = b, a % b
     return a
+
 
 def areCoprime(a, b) -> bool:
     """
@@ -37,6 +37,7 @@ def areCoprime(a, b) -> bool:
     :return:
     """
     return gcd(a, b) == 1
+
 
 def isValid(matrix: MatrixGraph, coord: list[int], value: int) -> bool:
     """
@@ -53,6 +54,7 @@ def isValid(matrix: MatrixGraph, coord: list[int], value: int) -> bool:
     neighbor_values = (node.get_value() for node in matrix.get_node_by_coord(coord).get_neighbors())
     return all(areCoprime(value, neighbor_value) for neighbor_value in neighbor_values if neighbor_value is not None)
 
+
 def generateCoprimeMatrix_old(n: int, m: int) -> list[list[int]]:
     """
         Attempts to generate and return a two-dimensional list where each element is coprime with
@@ -62,7 +64,7 @@ def generateCoprimeMatrix_old(n: int, m: int) -> list[list[int]]:
     :return:
     """
     matrix = [[0 for _ in range(m)] for _ in range(n)]
-    numbers = list(range(1, n*m + 1))
+    numbers = list(range(1, n * m + 1))
     random.shuffle(numbers)
 
     for i in range(n):
@@ -78,6 +80,7 @@ def generateCoprimeMatrix_old(n: int, m: int) -> list[list[int]]:
 
     return matrix
 
+
 def generateCoprimeMatrix(n, m) -> MatrixGraph:
     """
         Given dimensions n, m, generates and returns a fully labeled MatrixGraph
@@ -88,7 +91,7 @@ def generateCoprimeMatrix(n, m) -> MatrixGraph:
     :return:
     """
     maxFactors = 1
-    for i in range(1,n*m+1):
+    for i in range(1, n * m + 1):
         if count_unique_factors(i) > count_unique_factors(maxFactors):
             maxFactors = i
 
@@ -103,7 +106,7 @@ def generateCoprimeMatrix(n, m) -> MatrixGraph:
         :return:
         """
         matrix_graph = MatrixGraph(n, m)
-        numbers = list(range(2,n*m+1))
+        numbers = list(range(2, n * m + 1))
         random.shuffle(numbers)
         # move number with max factors to the beginning and 1 to the end
         numbers.remove(maxFactors)
@@ -143,6 +146,7 @@ def checkMatrix(matrix: MatrixGraph) -> bool:
 
     return True, None
 
+
 def printMatrix(matrix: list[list[int]]):
     """
         Format and print a two-dimensional list of ints to stdout
@@ -155,13 +159,12 @@ def printMatrix(matrix: list[list[int]]):
 
 if __name__ == "__main__":
 
-
     n, m = 8, 8
 
-    total_time=0
-    epoch=30
+    total_time = 0
+    epoch = 30
     for i in range(epoch):
-        print("|",end="")
+        print("|", end="")
     print()
 
     # refactoring isValid to use MatrixGraph objects broke the old algorithm. If you want that
@@ -178,8 +181,10 @@ if __name__ == "__main__":
     total_time = 0
     for i in range(epoch):
         NOW = time.time()
-        generateCoprimeMatrix(n, m)
-        total_time+=time.time()-NOW
+        matrix = generateCoprimeMatrix(n, m)
+        total_time += time.time() - NOW
         print("|", end="")
     print()
-    print(f"Modified algorithm average for {n}x{m} grid {total_time/epoch} seconds ({epoch} epochs)")
+    print(f"Modified algorithm average for {n}x{m} grid {total_time / epoch} seconds ({epoch} epochs)")
+
+    print_2d_matrix_graph(matrix)
