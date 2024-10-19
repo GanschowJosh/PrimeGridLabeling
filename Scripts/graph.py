@@ -1,4 +1,4 @@
-from prime_tools import coprime
+from Scripts.prime_tools import coprime
 
 class Node:
     """

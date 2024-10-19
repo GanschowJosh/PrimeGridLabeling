@@ -1,13 +1,8 @@
 import time
 import sys
-
-path = input("Enter the path to the folder containing your `GridPrimeLabeling.py` file: ")
-version = path.split("/")[-1] #inferring version number is the last directory
+from Scripts import GridPrimeLabeling
 outputPath = f"./StressTestData {time.strftime("%Y-%m-%d %H.%M.%S")}" #output path of the file, will depend on where the script is run
 
-#adding folder of current test file
-sys.path.insert(0, path)
-from GridPrimeLabeling import generateCoprimeMatrix, checkMatrix
 
 #detecting file errors before stress testing
 try:
@@ -31,10 +26,10 @@ def stressTest(maxSize, numTrials, timeout):
             startTime = time.time()
 
             try:
-                matrix = generateCoprimeMatrix(size, size)
+                matrix = GridPrimeLabeling.generateCoprimeMatrix(size, size)
                 endTime = time.time()
 
-                isValid, _ = checkMatrix(matrix)
+                isValid, _ = GridPrimeLabeling.checkMatrix(matrix)
                 if isValid:
                     successes += 1
                     times.append(endTime - startTime)
