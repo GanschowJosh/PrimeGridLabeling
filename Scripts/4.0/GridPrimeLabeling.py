@@ -64,7 +64,8 @@ def generateCoprimeMatrix(*dims: int) -> MatrixGraph:
 
 if __name__ == "__main__":
 
-    n, m = 5, 5
+    n = int(input("n: "))
+    m = int(input("m: "))
 
     total_time = 0
     epoch = 30
