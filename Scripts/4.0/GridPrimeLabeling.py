@@ -1,7 +1,7 @@
 import random
 import sys
 import time
-from math import prod
+from math import prod, factorial
 from graph import MatrixGraph, Graph, print_2d_matrix_graph
 from prime_tools import *
 
@@ -18,11 +18,22 @@ def generateCoprimeMatrix(*dims: int) -> MatrixGraph:
     nums = list(reversed(sorted(range(1, prod(dims)+1), key=count_unique_factors)))
     matrix = MatrixGraph(*dims)
 
+    iteration = 0
+    worst_case = factorial(prod(dims))
+    last_percent_update = None
+
     def recurse(g: Graph, nums: list[int], depth=0) -> Graph | None:
         """
         Given an (empty or partially labeled) Graph object and a list of numbers yet to be labeled,
         recursively attempts to generate a prime labeling, returning None if no answer is found.
         """
+        nonlocal iteration, worst_case, last_percent_update
+        # iteration += 1
+        # percent = (100 * iteration) // worst_case
+        # if percent != last_percent_update:
+        #     print(f"{percent}%")
+        #     last_percent_update = percent
+
         # get every unlabeled node in order of highest degree -> smallest degree
         nodes = (node for node in reversed(g.nodes_by_degree()) if node.get_value() is None)
 
