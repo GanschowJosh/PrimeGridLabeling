@@ -1,4 +1,4 @@
-from Scripts.prime_tools import coprime
+from prime_tools import coprime
 
 class Node:
     """
@@ -164,6 +164,36 @@ class Graph:
             print(f"{node.get_value()}: ", " ".join(str(x) for x in (i.get_value() for i in node.get_neighbors())))
 
 
+    def gen_dot_graph(self) -> str:
+        """
+            Returns a string representation of the graph in graphvis 'dot' language
+        :return:
+        """
+        dot_graph = ""
+        dot_graph_pairs = []
+        for node in self.nodes:
+            for neighbor in node.get_neighbors():
+                dot_graph_pairs.append(f"{node.get_value()} -- {neighbor.get_value()}")
+
+        for pair in set(dot_graph_pairs):
+            dot_graph += f"    {pair}\n"
+
+        return "strict graph {\n" + dot_graph + "}"
+
+    @staticmethod
+    def write_dot_graph_to_file(dot: str, filename: str):
+        """
+            Takes a string containing a string representation of a graph in graphvis
+            'dot' language, and writes it to a text file with the given filename (no file extensions should be given)
+        :param filename:
+        :return:
+        """
+
+        with open(f"{filename}_dotgraph.txt", "w") as f:
+            f.write(dot)
+
+
+
 class CompleteCoprimeGraph(Graph):
     """
         Defines Graph with n nodes labelled 1 through n
@@ -322,3 +352,9 @@ def print_2d_matrix_graph(graph: MatrixGraph):
             # value = "0" if value is None else str(value) # now, 0 is not treated as None
             print(value + " " * (5 - len(value)), end="")
         print()
+
+# dot graph demo
+# test = CompleteCoprimeGraph(10)
+# test_dotgraph = test.gen_dot_graph()
+# print(test_dotgraph)
+# Graph.write_dot_graph_to_file(test_dotgraph, "test")
