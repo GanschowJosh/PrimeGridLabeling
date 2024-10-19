@@ -64,7 +64,7 @@ def generateCoprimeMatrix(*dims: int) -> MatrixGraph:
     :return:
     """
 
-    list(reversed(sorted(range(prod(dims)), key=count_unique_factors)))
+    nums = list(reversed(sorted(range(prod(dims)), key=count_unique_factors)))
     matrix = MatrixGraph(*dims)
 
     def recurse(g: Graph, nums: list[int]) -> Graph | None:
@@ -73,6 +73,8 @@ def generateCoprimeMatrix(*dims: int) -> MatrixGraph:
         recursively attempts to generate a prime labeling, returning
         None if no answer is found
         """
+        print_2d_matrix_graph(g)
+        print("\n\n")
 
         # get every unlabeled node in order of highest degree -> smallest degree
         # (It's easier to label high degree nodes early on)
@@ -83,6 +85,8 @@ def generateCoprimeMatrix(*dims: int) -> MatrixGraph:
                 neighbor_values = (neighbor.get_value() for neighbor in node.get_neighbors())
 
                 for neighbor_value in neighbor_values:
+                    if neighbor_value is None:
+                        continue
                     if not areCoprime(neighbor_value, num):
                         break
                 else:
@@ -94,32 +98,18 @@ def generateCoprimeMatrix(*dims: int) -> MatrixGraph:
                     if g.is_full():
                         return g
 
+                    next_r = recurse(g, nums)
+
+                    if next_r is None:
+                        node.set_value(None)
+                        continue
+                    else:
+                        return next_r
+
         return None
 
+    return recurse(matrix, nums)
 
-
-
-
-
-
-
-def checkMatrix(matrix: MatrixGraph) -> bool:
-    """
-    For every node in a MatrixGraph, check that it's value is coprime with the values of it's neighbors
-
-    Returns a boolean value
-    :param matrix:
-    :return:
-    """
-
-    for coord in matrix.possible_coords():
-
-        # This could be done way cleaner, but not using isValid.
-        # I want to rewrite this script to not use the current isValid, but not yet - Burke
-        if not isValid(matrix, coord, matrix.get_node_by_coord(coord).get_value()):
-            return False, tuple(coord)
-
-    return True, None
 
 
 def printMatrix(matrix: list[list[int]]):
@@ -134,7 +124,7 @@ def printMatrix(matrix: list[list[int]]):
 
 if __name__ == "__main__":
 
-    n, m = 8, 8
+    n, m = 5, 1
 
     total_time = 0
     epoch = 30
