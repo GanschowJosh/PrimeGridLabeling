@@ -42,28 +42,62 @@ def prime_factors(x: int) -> list[int]:
     return sorted(l_filtered)
 
 
-def coprime(x: int, y: int):
+# My old, slower coprime implementation
+# leaving in to confirm the new coprime() from John behaves the same as I expect it to
+# def coprime(x: int, y: int):
+#     """
+#         checks if two integers are relatively prime
+#
+#         That is, if the only prime factor they share is '1'
+#
+#         returns a boolean value
+#
+#         Example:
+#
+#         rel_prime(5, 10) -> False
+#         rel_primt(5, 13) -> True
+#     :param x:
+#     :param y:
+#     :return:
+#     """
+#
+#     x_fact = set(prime_factors(x))
+#     y_fact = set(prime_factors(y))
+#
+#     for i in x_fact:
+#         if i in y_fact and i != 1:
+#             return False
+#
+#     return True
+
+def count_unique_factors(n: int) -> int:
     """
-        checks if two integers are relatively prime
-
-        That is, if the only prime factor they share is '1'
-
-        returns a boolean value
-
-        Example:
-
-        rel_prime(5, 10) -> False
-        rel_primt(5, 13) -> True
-    :param x:
-    :param y:
+    Returns an integer enumerating the number of unique prime factors of the given integer.
+    :param n:
     :return:
     """
+    count = 0
+    for i in range(2, n):
+        if n % i == 0:
+            count += 1
+            while n % i == 0:
+                n = n // i
+    return count
 
-    x_fact = set(prime_factors(x))
-    y_fact = set(prime_factors(y))
 
-    for i in x_fact:
-        if i in y_fact and i != 1:
-            return False
+def gcd(a, b):
+    while b:
+        a, b = b, a % b
+    return a
 
-    return True
+
+def coprime(a, b) -> bool:
+    """
+    Returns a boolean value indicating whether the two integers given are coprime
+
+    That is, if the integers share no unique prime factors
+    :param a:
+    :param b:
+    :return:
+    """
+    return gcd(a, b) == 1

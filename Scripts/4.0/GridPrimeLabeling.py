@@ -3,58 +3,9 @@ import sys
 import time
 from math import prod
 from graph import MatrixGraph, Graph, print_2d_matrix_graph
+from prime_tools import *
 
 sys.setrecursionlimit(1000000000)
-
-
-def count_unique_factors(n: int) -> int:
-    """
-    Returns an integer enumerating the number of unique prime factors of the given integer.
-    :param n:
-    :return:
-    """
-    count = 0
-    for i in range(2, n):
-        if n % i == 0:
-            count += 1
-            while n % i == 0:
-                n = n // i
-    return count
-
-
-def gcd(a, b):
-    while b:
-        a, b = b, a % b
-    return a
-
-
-def areCoprime(a, b) -> bool:
-    """
-    Returns a boolean value indicating whether the two integers given are coprime
-
-    That is, if the integers share no unique prime factors
-    :param a:
-    :param b:
-    :return:
-    """
-    return gcd(a, b) == 1
-
-
-def isValid(matrix: MatrixGraph, coord: list[int], value: int) -> bool:
-    """
-    Takes a MatrixGraph object, the coordinate of a node, and an integer value
-
-    Returns a boolean indicating if that value is coprime with the values of all the neighbors of
-    the node at the given coordinate.
-
-    :param matrix:
-    :param coord:
-    :param value:
-    :return:
-    """
-    neighbor_values = (node.get_value() for node in matrix.get_node_by_coord(coord).get_neighbors())
-    return all(areCoprime(value, neighbor_value) for neighbor_value in neighbor_values if neighbor_value is not None)
-
 
 def generateCoprimeMatrix(*dims: int) -> MatrixGraph:
     """
@@ -73,8 +24,6 @@ def generateCoprimeMatrix(*dims: int) -> MatrixGraph:
         recursively attempts to generate a prime labeling, returning
         None if no answer is found
         """
-        print_2d_matrix_graph(g)
-        print("\n\n")
 
         # get every unlabeled node in order of highest degree -> smallest degree
         # (It's easier to label high degree nodes early on)
@@ -91,7 +40,9 @@ def generateCoprimeMatrix(*dims: int) -> MatrixGraph:
                         break
                 else:
                     # num successfully applied to graph
+                    print(f"\nSet value: {num}\n")#DEBUG
                     node.set_value(num)
+                    print_2d_matrix_graph(g)#DEBUG
                     nums.remove(num)
 
                     # base case
@@ -110,18 +61,6 @@ def generateCoprimeMatrix(*dims: int) -> MatrixGraph:
 
     return recurse(matrix, nums)
 
-
-
-def printMatrix(matrix: list[list[int]]):
-    """
-    Format and print a two-dimensional list of ints to stdout
-    :param matrix:
-    :return:
-    """
-    for row in matrix:
-        print(" ".join(f"{num:3d}" for num in row))
-
-
 if __name__ == "__main__":
 
     n, m = 5, 1
@@ -131,17 +70,6 @@ if __name__ == "__main__":
     for i in range(epoch):
         print("|", end="")
     print()
-
-    # refactoring isValid to use MatrixGraph objects broke the old algorithm. If you want that
-    # ported to the graph library too I'll do that - Burke
-    # #original algorithm
-    # for i in range(epoch):
-    #     NOW = time.time()
-    #     generateCoprimeMatrix_old(n, m)
-    #     total_time+=time.time()-NOW
-    #     print("|",end="")
-    # print()
-    # print(f"Original algorithm average for {n}x{m} grid {total_time / epoch} seconds ({epoch} epochs)")
 
     total_time = 0
     for i in range(epoch):
