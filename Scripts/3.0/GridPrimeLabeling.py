@@ -3,6 +3,7 @@ import sys
 import time
 from graph import MatrixGraph, print_2d_matrix_graph
 
+
 sys.setrecursionlimit(1000000000)
 
 
@@ -12,6 +13,7 @@ def count_unique_factors(n: int) -> int:
     :param n:
     :return:
     """
+    
     count = 0
     for i in range(2, n):
         if n % i == 0:
@@ -20,12 +22,10 @@ def count_unique_factors(n: int) -> int:
                 n = n // i
     return count
 
-
 def gcd(a, b):
     while b:
         a, b = b, a % b
     return a
-
 
 def areCoprime(a, b) -> bool:
     """
@@ -37,7 +37,6 @@ def areCoprime(a, b) -> bool:
     :return:
     """
     return gcd(a, b) == 1
-
 
 def isValid(matrix: MatrixGraph, coord: list[int], value: int) -> bool:
     """
@@ -91,7 +90,7 @@ def generateCoprimeMatrix(n, m) -> MatrixGraph:
     :return:
     """
     maxFactors = 1
-    for i in range(1, n * m + 1):
+    for i in range(1,n*m+1):
         if count_unique_factors(i) > count_unique_factors(maxFactors):
             maxFactors = i
 
@@ -106,7 +105,9 @@ def generateCoprimeMatrix(n, m) -> MatrixGraph:
         :return:
         """
         matrix_graph = MatrixGraph(n, m)
+
         numbers = list(range(2, n * m + 1))
+
         random.shuffle(numbers)
         # move number with max factors to the beginning and 1 to the end
         numbers.remove(maxFactors)
@@ -159,13 +160,9 @@ def printMatrix(matrix: list[list[int]]):
 
 if __name__ == "__main__":
 
+
     n, m = 8, 8
 
-    total_time = 0
-    epoch = 30
-    for i in range(epoch):
-        print("|", end="")
-    print()
 
     # refactoring isValid to use MatrixGraph objects broke the old algorithm. If you want that
     # ported to the graph library too I'll do that - Burke
@@ -181,8 +178,10 @@ if __name__ == "__main__":
     total_time = 0
     for i in range(epoch):
         NOW = time.time()
+        
         matrix = generateCoprimeMatrix(n, m)
         total_time += time.time() - NOW
+
         print("|", end="")
     print()
     print(f"Modified algorithm average for {n}x{m} grid {total_time / epoch} seconds ({epoch} epochs)")
