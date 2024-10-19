@@ -26,14 +26,14 @@ typedef struct Node {
  @return the greatest common divisor for integers a and b.
  */
 int gcd(int a, int b) {
-    int maxNum;
+    int max;
 
     // find if a or b is smaller
-    if (a < b) maxNum = a;
-    else maxNum = b;
+    if (a < b) max = a;
+    else max = b;
 
     // test possible divisors
-    for (int divisor = maxNum; divisor > 1; divisor--) {
+    for (int divisor = max; divisor > 1; divisor--) {
         if (a % divisor == 0 && b % divisor == 0) return divisor;
     }
     return 1;
@@ -49,12 +49,12 @@ Node* findNode(Node* head, int n) {
     // return NULL;
 }
 
-void findCoprimes(Node* head, Node* node, int maxNum) {
+void findCoprimes(Node* head, Node* node, int max) {
     // 1 is always coprime
     (*node).coprimes[0] = head;
 
-    // loop through each potential coprime from 2 to maxNum (inclusive)
-    for (int coprimeCandidate = 2; coprimeCandidate < maxNum + 1; coprimeCandidate++) {
+    // loop through each potential coprime from 2 to max (inclusive)
+    for (int coprimeCandidate = 2; coprimeCandidate < max + 1; coprimeCandidate++) {
         // node and candidate are coprime if their gcd is 1
         if (gcd((*node).value, coprimeCandidate) == 1) {
             // add candidate to list of coprimes of node
@@ -64,9 +64,7 @@ void findCoprimes(Node* head, Node* node, int maxNum) {
     }
 }
 
-// Generates graph of numbers that each link to their coprimes.
-// Returns a pointer to the head node of the graph (holding the number 1).
-Node* generateGraph(int maxNum) {
+Node* initializeNodes(int max) {
     printf("Initializing nodes...\n");
 
     // initialize head node which contains the number 1
@@ -78,33 +76,39 @@ Node* generateGraph(int maxNum) {
         (*head).coprimes[j] = NULL;
     }
 
-    // findCoprimes(head, head, maxNum);
-
     // initialize body nodes
     Node* nodeOld = head;
-    for (int i = 2; i < maxNum + 1; i++) {
-        // initialize next node
+    for (int i = 2; i < max + 1; i++) {
         Node* node = (Node*) malloc(sizeof(Node));
         (*node).value = i;
         (*node).numberOfCoprimes = 1;
+        
         for (int j = 0; j < COPRIME_ARRAY_LENGTH; j++) {
             (*node).coprimes[j] = NULL;
         }
 
         (*nodeOld).next = node;
-
         nodeOld = node;
     }
     (*nodeOld).next = NULL;
 
-    // link coprimes
+    return head;
+}
+
+void linkCoprimes(Node* head, int max) {
     Node* node = head;
-    for (int i = 0; i < maxNum; i++) {
-        findCoprimes(head, node, maxNum);
-        printf("Linked %d / %d nodes...\n", i + 1, maxNum);
+    for (int i = 0; i < max; i++) {
+        findCoprimes(head, node, max);
+        printf("Linked %d / %d nodes...\n", i + 1, max);
         node = (*node).next;
     }
+}
 
+// Generates graph of numbers that each link to their coprimes.
+// Returns a pointer to the head node of the graph (holding the number 1).
+Node* generateGraph(int max) {
+    Node* head = initializeNodes(max);
+    linkCoprimes(head, max);
     return head;
 }
 
@@ -122,16 +126,7 @@ void printNode(Node* node, char* verbosity) {
 
 void printGraph(Node* node, char* verbosity) {
     while (node != NULL) {
-        // printf("%d\n", (*node).value);
-        // for (int i = 0; i < (*node).numberOfCoprimes; i++) {
-        //     if (i == (*node).numberOfCoprimes - 1)
-        //         printf("└── %d\n", (*(*node).coprimes[i]).value);
-        //     else
-        //         printf("├── %d\n", (*(*node).coprimes[i]).value);
-        // }
-
         printNode(node, verbosity);
-
         node = (*node).next;
     }
 }
