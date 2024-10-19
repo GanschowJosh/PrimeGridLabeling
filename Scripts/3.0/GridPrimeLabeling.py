@@ -2,7 +2,7 @@ import random
 import sys
 import math
 import time
-from graph import MatrixGraph
+from graph import MatrixGraph, print_2d_matrix_graph
 
 
 sys.setrecursionlimit(1000000000)
@@ -178,8 +178,10 @@ if __name__ == "__main__":
     total_time = 0
     for i in range(epoch):
         NOW = time.time()
-        generateCoprimeMatrix(n, m)
+        matrix = generateCoprimeMatrix(n, m)
         total_time+=time.time()-NOW
         print("|", end="")
     print()
     print(f"Modified algorithm average for {n}x{m} grid {total_time/epoch} seconds ({epoch} epochs)")
+
+    print_2d_matrix_graph(matrix)
