@@ -1,10 +1,8 @@
 // TODO
 // tidy-up code;
 // add java docs;
-// re-impliment Node.coprimes as linked list for dynamic allocation;
-// have output go to file rather than std out
 // have main josh program read in coprimes from file
-// split into head files
+// split into header files
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -40,17 +38,6 @@ int gcd(int a, int b) {
     }
     return 1;
 }
-
-/*
-// Finds the node that contains value n.
-Root* findNode(Root* head, int n) {
-    Root* node = head;
-    while(1) {
-        if ((*node).value == n) return node;
-        else node = (*node).nextRoot;
-    }
-}
-*/
 
 void findCoprimes(Root* node, int max) {
     Coprime* coprime;
@@ -113,20 +100,6 @@ Root* generateGraph(int max) {
     linkCoprimes(head, max);
     return head;
 }
-
-/*
-void printNodeLegacy(Node* node, char* verbosity) {
-    printf("%d\n", (*node).value);
-    if (*verbosity == 'v') {
-        for (int i = 0; i < (*node).numberOfCoprimes; i++) {
-            if (i == (*node).numberOfCoprimes - 1)
-                printf("└── %d\n", (*(*node).coprimes[i]).value);
-            else
-                printf("├── %d\n", (*(*node).coprimes[i]).value);
-        }
-    }
-}
-*/
 
 void printNode(Root* node, FILE* outFile) {
     fprintf(outFile, "%d:", (*node).value);
