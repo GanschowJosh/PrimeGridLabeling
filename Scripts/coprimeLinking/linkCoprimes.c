@@ -31,7 +31,7 @@ int main() {
     // prints graph to the outFile
     printGraph(head, outFile);
 
-    printf("Coprime graph written to: ../Data/linkedCoprimes.txt\n");
+    printf("Coprime graph written to: %s\n", linkedCoprimesFilePath);
 
     fclose(outFile);
 }
