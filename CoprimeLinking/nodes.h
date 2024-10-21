@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#import "nodes.h"
 #import "math.h"
 
 typedef struct Root {
@@ -12,6 +13,27 @@ typedef struct Coprime {
     int value;
     struct Coprime* nextCoprime;
 } Coprime;
+
+void linkCoprimes(Root* node, int max) {
+    Coprime* coprime;
+    Coprime* oldCoprime;
+
+    // 1 is always a coprime
+    coprime = (Coprime*) malloc(sizeof(Coprime));
+    (*coprime).value = 1;
+    (*node).nextCoprime = coprime;
+
+    // loop through each potential coprime from 2 to max (inclusive)
+    for (int coprimeCandidate = 2; coprimeCandidate < max + 1; coprimeCandidate++) {
+        if (gcd((*node).value, coprimeCandidate) == 1) {
+            oldCoprime = coprime;
+            coprime = (Coprime*) malloc(sizeof(Coprime));
+            (*coprime).value = coprimeCandidate;
+            (*oldCoprime).nextCoprime = coprime;
+        }
+    }
+    (*coprime).nextCoprime = NULL;
+}
 
 Root* initializeNodes(int max) {
     printf("Initializing nodes...\n");
@@ -35,27 +57,6 @@ Root* initializeNodes(int max) {
     (*nodeOld).nextRoot = NULL;
 
     return head;
-}
-
-void linkCoprimes(Root* node, int max) {
-    Coprime* coprime;
-    Coprime* oldCoprime;
-
-    // 1 is always a coprime
-    coprime = (Coprime*) malloc(sizeof(Coprime));
-    (*coprime).value = 1;
-    (*node).nextCoprime = coprime;
-
-    // loop through each potential coprime from 2 to max (inclusive)
-    for (int coprimeCandidate = 2; coprimeCandidate < max + 1; coprimeCandidate++) {
-        if (gcd((*node).value, coprimeCandidate) == 1) {
-            oldCoprime = coprime;
-            coprime = (Coprime*) malloc(sizeof(Coprime));
-            (*coprime).value = coprimeCandidate;
-            (*oldCoprime).nextCoprime = coprime;
-        }
-    }
-    (*coprime).nextCoprime = NULL;
 }
 
 // Generates graph of numbers that each link to their coprimes.

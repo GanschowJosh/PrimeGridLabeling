@@ -1,16 +1,17 @@
 // TODO
 // tidy-up code;
 // add java docs;
-// have main josh program read in coprimes from file
+// interact with graph.py
 
 #include <stdio.h>
 #include <stdlib.h>
 #import "nodes.h"
 #import "print.h"
+#import "math.h"
 
 int main() {
     int max;
-    char linkedCoprimesFilePath[64] = "../../Data/linkedCoprimes.txt";
+    char linkedCoprimesFilePath[64] = "../Data/linkedCoprimes.txt";
     
     // open file
     FILE *outFile = fopen(linkedCoprimesFilePath, "w");
