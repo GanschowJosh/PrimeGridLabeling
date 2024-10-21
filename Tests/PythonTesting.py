@@ -1,7 +1,7 @@
 import time
 import sys
 from Scripts import GridPrimeLabeling
-outputPath = f"./StressTestData {time.strftime('%Y-%m-%d %H.%M.%S')}" #output path of the file, will depend on where the script is run
+outputPath = f"./StressTestData {time.strftime("%Y-%m-%d %H.%M.%S")}" #output path of the file, will depend on where the script is run
 
 
 #detecting file errors before stress testing
@@ -72,7 +72,7 @@ def printSummary(results):
         print("\nSummary:")
         file.write("Size | Successes | Failures | Avg Time (s) | Min Time (s) | Max Time (s)\n")
         print("Size | Successes | Failures | Avg Time (s) | Min Time (s) | Max Time (s)")
-        file.write(f"{'-'*70}\n")
+        file.write(f"{"-"*70}\n")
         print("-"*70)
         for size, data in results.items():
             file.write(f"{size:4d} | {data['successes']:9d} | {data['failures']:8d} | {data['avgTime']:12.4f} | {data['minTime']:12.4f} | {data['maxTime']:12.4f}\n")
