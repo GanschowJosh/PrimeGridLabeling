@@ -1,6 +1,6 @@
-
-Scripts/2.0/__pycache__/
 Scripts/__pycache__/
+Scripts/grids
+
 Tests/__pycache__/
 .vscode/
 .idea/
