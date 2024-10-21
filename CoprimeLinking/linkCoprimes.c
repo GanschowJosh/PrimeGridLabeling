@@ -8,8 +8,6 @@
 #import "nodes.h"
 #import "print.h"
 
-
-
 int main() {
     int max;
     char linkedCoprimesFilePath[64] = "../../Data/linkedCoprimes.txt";
