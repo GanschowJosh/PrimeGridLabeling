@@ -164,36 +164,6 @@ class Graph:
             print(f"{node.get_value()}: ", " ".join(str(x) for x in (i.get_value() for i in node.get_neighbors())))
 
 
-    def gen_dot_graph(self) -> str:
-        """
-            Returns a string representation of the graph in graphvis 'dot' language
-        :return:
-        """
-        dot_graph = ""
-        dot_graph_pairs = []
-        for node in self.nodes:
-            for neighbor in node.get_neighbors():
-                dot_graph_pairs.append(f"{node.get_value()} -- {neighbor.get_value()}")
-
-        for pair in set(dot_graph_pairs):
-            dot_graph += f"    {pair}\n"
-
-        return "strict graph {\n" + dot_graph + "}"
-
-    @staticmethod
-    def write_dot_graph_to_file(dot: str, filename: str):
-        """
-            Takes a string containing a string representation of a graph in graphvis
-            'dot' language, and writes it to a text file with the given filename (no file extensions should be given)
-        :param filename:
-        :return:
-        """
-
-        with open(f"{filename}_dotgraph.txt", "w") as f:
-            f.write(dot)
-
-
-
 class CompleteCoprimeGraph(Graph):
     """
         Defines Graph with n nodes labelled 1 through n
@@ -335,10 +305,12 @@ class MatrixGraph(Graph):
             self.get_node_by_coord(coord).neighbors = valid_nodes
 
 
-def print_2d_matrix_graph(graph: MatrixGraph):
+def print_2d_matrix_graph(graph: MatrixGraph, mute=False) -> str:
     """
         Takes a MatrixGraph with two dimensions, and formats and prints the values of
-        every member node to std out
+        every member node to std out if mute = False
+
+        Also returns the generated string representation, regardless of mute's value
     :param graph:
     :return:
     """
@@ -346,15 +318,17 @@ def print_2d_matrix_graph(graph: MatrixGraph):
     if len(graph.dim) != 2:
         raise ValueError("MatrixGraph with other than 2 dimensions provided")
 
+    graph_string = ""
+
     for i in range(graph.dim[1]):
         for j in range(graph.dim[0]):
             value = str(graph.get_node_by_coord([j, i]).value)
             # value = "0" if value is None else str(value) # now, 0 is not treated as None
             print(value + " " * (5 - len(value)), end="")
-        print()
+            graph_string += value + " " * (5 - len(value))
+        graph_string += "\n"
 
-# dot graph demo
-# test = CompleteCoprimeGraph(10)
-# test_dotgraph = test.gen_dot_graph()
-# print(test_dotgraph)
-# Graph.write_dot_graph_to_file(test_dotgraph, "test")
+    if mute == False:
+        print(graph_string)
+
+    return graph_string
