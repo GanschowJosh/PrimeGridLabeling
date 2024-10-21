@@ -1,4 +1,11 @@
-from prime_tools import coprime
+try:
+    from prime_tools import coprime
+except:
+    from Scripts.prime_tools import coprime
+
+# For graphviz
+import subprocess, io
+
 
 class Node:
     """
@@ -162,6 +169,59 @@ class Graph:
         """
         for node in self.nodes:
             print(f"{node.get_value()}: ", " ".join(str(x) for x in (i.get_value() for i in node.get_neighbors())))
+
+
+    def gen_dot_graph(self) -> str:
+        """
+            Returns a string representation of the graph in graphvis 'dot' language
+        :return:
+        """
+        dot_graph = ""
+        dot_graph_pairs = []
+        for node in self.nodes:
+            for neighbor in node.get_neighbors():
+                dot_graph_pairs.append(f"{node.get_value()} -- {neighbor.get_value()}")
+
+        for pair in set(dot_graph_pairs):
+            dot_graph += f"    {pair}\n"
+
+        return "strict graph {\n" + dot_graph + "}"
+    
+
+    def gen_svg_graph(self, filename: str, layout_engine: str = "circo") -> str:
+        """
+            Returns an svg representation of a the graph as an SVG file
+        """
+        return check_output(["dot", "-Tsvg", f"-K{layout_engine}"], input=self.gen_dot_graph())
+    
+    def save_svg(self, path: str, layout_engine: str = "circo"):
+        """
+            Save an SVG representation of the graph to a path
+        """
+        with open(path, "w") as f:
+            f.write(self.gen_svg_graph(layout_engine=layout_engine))
+        
+    def show(self, layout_engine: str = "circo"):
+        """
+            Display the graph using graphviz
+        """
+        from PIL import Image
+        png = subprocess.run(["dot", "-Tpng", f"-K{layout_engine}"], input=self.gen_dot_graph().encode(), text=False, stdout=subprocess.PIPE).stdout
+        Image.open(io.BytesIO(png)).show()
+
+
+    @staticmethod
+    def write_dot_graph_to_file(dot: str, filename: str):
+        """
+            Takes a string containing a string representation of a graph in graphvis
+            'dot' language, and writes it to a text file with the given filename (no file extensions should be given)
+        :param filename:
+        :return:
+        """
+
+        with open(f"{filename}_dotgraph.txt", "w") as f:
+            f.write(dot)
+
 
 
 class CompleteCoprimeGraph(Graph):

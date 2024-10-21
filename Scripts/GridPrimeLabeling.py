@@ -1,8 +1,10 @@
 import random
 import sys
 import time
-from Scripts.graph import MatrixGraph, print_2d_matrix_graph
-
+try:
+    from Scripts.graph import MatrixGraph, print_2d_matrix_graph
+except:
+    from graph import MatrixGraph, print_2d_matrix_graph
 sys.setrecursionlimit(1000000000)
 
 
