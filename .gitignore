@@ -1,2 +1,4 @@
-Scripts/__pycache__
 Tests/__pycache__
+.vscode/
+Scripts/coprimeLinking/build
+Scripts/coprimeLinking/a.out
