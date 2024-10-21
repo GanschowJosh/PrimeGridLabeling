@@ -2,3 +2,4 @@ Tests/__pycache__
 .vscode/
 Scripts/coprimeLinking/build
 Scripts/coprimeLinking/a.out
+Data/linkedCoprimes.txt
