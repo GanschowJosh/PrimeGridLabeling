@@ -63,9 +63,10 @@ void linkCoprimes(Root* node, int max) {
 Root* generateGraph(int max) {
     Root* head = initializeNodes(max);
     Root* node = head;
-    for (int i = 0; node != NULL; i++) {
+    int i = 0;
+    while (node != NULL) {
         linkCoprimes(node, max);
-        printf("Linked %d / %d nodes...\n", i + 1, max);
+        printf("Linked %d / %d nodes...\n", ++i, max);
         node = (*node).nextRoot;
     }
     return head;
