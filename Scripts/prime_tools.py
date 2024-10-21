@@ -42,28 +42,101 @@ def prime_factors(x: int) -> list[int]:
     return sorted(l_filtered)
 
 
-def coprime(x: int, y: int):
+# My old, slower coprime implementation
+# leaving in to confirm the new coprime() from John behaves the same as I expect it to
+# def coprime(x: int, y: int):
+#     """
+#         checks if two integers are relatively prime
+#
+#         That is, if the only prime factor they share is '1'
+#
+#         returns a boolean value
+#
+#         Example:
+#
+#         rel_prime(5, 10) -> False
+#         rel_primt(5, 13) -> True
+#     :param x:
+#     :param y:
+#     :return:
+#     """
+#
+#     x_fact = set(prime_factors(x))
+#     y_fact = set(prime_factors(y))
+#
+#     for i in x_fact:
+#         if i in y_fact and i != 1:
+#             return False
+#
+#     return True
+
+def count_unique_factors(n: int) -> int:
     """
-        checks if two integers are relatively prime
-
-        That is, if the only prime factor they share is '1'
-
-        returns a boolean value
-
-        Example:
-
-        rel_prime(5, 10) -> False
-        rel_primt(5, 13) -> True
-    :param x:
-    :param y:
+    Returns an integer enumerating the number of unique prime factors of the given integer.
+    :param n:
     :return:
     """
+    count = 0
+    for i in range(2, n):
+        if n % i == 0:
+            count += 1
+            while n % i == 0:
+                n = n // i
+    return count
 
-    x_fact = set(prime_factors(x))
-    y_fact = set(prime_factors(y))
 
-    for i in x_fact:
-        if i in y_fact and i != 1:
-            return False
+def gcd(a, b):
+    while b:
+        a, b = b, a % b
+    return a
 
-    return True
+
+def coprime(a, b) -> bool:
+    """
+    Returns a boolean value indicating whether the two integers given are coprime
+
+    That is, if the integers share no unique prime factors
+    :param a:
+    :param b:
+    :return:
+    """
+    return gcd(a, b) == 1
+
+
+def factors(n) -> set[set[int]]:
+    """
+    Returns a set of factors each integer 1...n
+    """
+    factors = {i: set() for i in range(1, n + 1)}
+    for i in range(1, n+1):
+        for factor in range(1, int(i ** 0.5) + 1):
+            if i % factor == 0:
+                factors[i].add(factor)
+                if factor != i // factor:
+                    factors[i].add(i // factor)
+    return factors
+
+
+def num_of_factors(n) -> set[set[int]]:
+    """
+    Returns number of factors of each integer 1...n
+    """
+    factorlist = factors(n)
+    num_factors = {i: len(factorlist[i]) for i in range(1, n + 1)}
+    return num_factors
+
+
+def most_factors_first(n) -> list[list[int]]:
+    """
+    Returns a list of integers sorted backwards by how many factors they have.
+    This function helps bias generate_prime_grid by trying to choose to get rid of the
+    "worst" numbers as early as possible, similar to move ordering in chess:
+    https://www.chessprogramming.org/Move_Ordering
+
+    An example of this in a 90x90 grid: *7560*, with 64 factors, would be
+    chosen first for the top left corner of the grid.
+    """
+    factor_counts = num_of_factors(n)
+    sorted_list = sorted(factor_counts.items(), key=lambda item: item[1], reverse=True)
+    return [item[0] for item in sorted_list]
+

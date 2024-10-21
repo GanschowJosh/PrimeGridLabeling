@@ -6,6 +6,7 @@ except:
 # For graphviz
 import subprocess, io
 
+
 class Node:
     """
         Defines the member nodes (verticies) of a Graph
@@ -364,10 +365,12 @@ class MatrixGraph(Graph):
             self.get_node_by_coord(coord).neighbors = valid_nodes
 
 
-def print_2d_matrix_graph(graph: MatrixGraph):
+def print_2d_matrix_graph(graph: MatrixGraph, mute=False) -> str:
     """
         Takes a MatrixGraph with two dimensions, and formats and prints the values of
-        every member node to std out
+        every member node to std out if mute = False
+
+        Also returns the generated string representation, regardless of mute's value
     :param graph:
     :return:
     """
@@ -375,9 +378,17 @@ def print_2d_matrix_graph(graph: MatrixGraph):
     if len(graph.dim) != 2:
         raise ValueError("MatrixGraph with other than 2 dimensions provided")
 
+    graph_string = ""
+
     for i in range(graph.dim[1]):
         for j in range(graph.dim[0]):
             value = str(graph.get_node_by_coord([j, i]).value)
             # value = "0" if value is None else str(value) # now, 0 is not treated as None
             print(value + " " * (5 - len(value)), end="")
-        print()
+            graph_string += value + " " * (5 - len(value))
+        graph_string += "\n"
+
+    if mute == False:
+        print(graph_string)
+
+    return graph_string
