@@ -27,7 +27,7 @@ void linkCoprimes(Node* a, Node* b) {
 }
 
 // finds every coprime for every node
-void findCoprimes(Node* node, int max, int verbose) {
+void findCoprimes(Node* node, int max) {
     printf("Finding coprimes...\n");
 
     // loop through every node from [1,max]
@@ -45,8 +45,7 @@ void findCoprimes(Node* node, int max, int verbose) {
         }
 
         // print progress
-        if (verbose == 1)
-            printProgress((*node).value, max);
+        printf("%d / %d nodes linked...\n", (*node).value, max);
 
         // try next node
         node = (*node).nextNode;
@@ -72,6 +71,6 @@ void initializeNodes(Node* node, int max) {
 Node* generateGraph(int max, int verbose) {
     Node* head = (Node*) malloc(sizeof(Node));
     initializeNodes(head, max);
-    findCoprimes(head, max, verbose);
+    findCoprimes(head, max);
     return head;
 }
