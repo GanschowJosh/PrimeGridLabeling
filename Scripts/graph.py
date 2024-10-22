@@ -127,6 +127,9 @@ class Graph:
     def get_node(self, n: int) -> Node:
         return self.nodes[n]
 
+    def get_nodes(self) -> list[Node]:
+        return self.nodes.copy()
+
     def nodes_by_degree(self) -> list[Node]:
         """
             returns a list of the graph's nodes, sorted by degree (number of neighbors)
@@ -371,6 +374,7 @@ def print_2d_matrix_graph(graph: MatrixGraph, mute=False) -> str:
         every member node to std out if mute = False
 
         Also returns the generated string representation, regardless of mute's value
+    :param mute:
     :param graph:
     :return:
     """
@@ -378,17 +382,19 @@ def print_2d_matrix_graph(graph: MatrixGraph, mute=False) -> str:
     if len(graph.dim) != 2:
         raise ValueError("MatrixGraph with other than 2 dimensions provided")
 
+    max_len = len(str(max((node.value for node in graph.get_nodes()))))
+
     graph_string = ""
 
     for i in range(graph.dim[1]):
         for j in range(graph.dim[0]):
             value = str(graph.get_node_by_coord([j, i]).value)
             # value = "0" if value is None else str(value) # now, 0 is not treated as None
-            print(value + " " * (5 - len(value)), end="")
+            print(value + " " * (max_len + 1 - len(value)), end="")
             graph_string += value + " " * (5 - len(value))
         graph_string += "\n"
 
-    if mute == False:
+    if not mute:
         print(graph_string)
 
     return graph_string
