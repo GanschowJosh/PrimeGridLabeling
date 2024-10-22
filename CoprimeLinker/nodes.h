@@ -18,7 +18,7 @@ void linkCoprimes(Node* a, Node* b) {
     (*a).coprimeArray = (Node**) realloc((*a).coprimeArray, (*a).numberOfCoprimes * (sizeof(Node)));
     (*a).coprimeArray[(*a).numberOfCoprimes - 1] = b;
 
-    if (a == b) return; // keeps this node from getting operated on twice
+    if (a == b) return; // keeps duplicate node from getting operated on twice
 
     // assign a as a coprime of b
     (*b).numberOfCoprimes++;
@@ -27,7 +27,9 @@ void linkCoprimes(Node* a, Node* b) {
 }
 
 // finds every coprime for every node
-void findCoprimes(Node* node, int max) {
+void findCoprimes(Node* node, int max, int verbose) {
+    printf("Finding coprimes...\n");
+
     // loop through every node from [1,max]
     while (node != NULL) {
         Node* candidate = node;
@@ -43,7 +45,8 @@ void findCoprimes(Node* node, int max) {
         }
 
         // print progress
-        printProgress((*node).value, max);
+        if (verbose == 1)
+            printProgress((*node).value, max);
 
         // try next node
         node = (*node).nextNode;
@@ -51,9 +54,9 @@ void findCoprimes(Node* node, int max) {
 }
 
 void initializeNodes(Node* node, int max) {
-    Node* lastNode;
-
     printf("Initializing nodes...\n");
+
+    Node* lastNode;
     for (int value = 1; value < max + 1; value++) {
         (*node).value = value;
         (*node).numberOfCoprimes = 0;
@@ -66,9 +69,9 @@ void initializeNodes(Node* node, int max) {
 
 // Generates graph of numbers that each link to their coprimes.
 // Returns a pointer to the head node of the graph (holding the number 1).
-Node* generateGraph(int max) {
+Node* generateGraph(int max, int verbose) {
     Node* head = (Node*) malloc(sizeof(Node));
     initializeNodes(head, max);
-    findCoprimes(head, max);
+    findCoprimes(head, max, verbose);
     return head;
 }

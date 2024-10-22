@@ -2,7 +2,7 @@
 // tidy-up code;
 // add java docs;
 // interact with graph.py
-// take max as argv
+// take max as argv; delete debug mode in main
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -14,6 +14,7 @@ int main() {
     int max;
     char linkedCoprimesFilePath[64] = "../Data/linkedCoprimes.txt";
     int debug = 0;
+    int verbose = 0;
     
     // open file
     FILE *outFile = fopen(linkedCoprimesFilePath, "w");
@@ -30,7 +31,7 @@ int main() {
     else max = debug;
 
     // generate graph of integers and their coprimes
-    Node* head = generateGraph(max);
+    Node* head = generateGraph(max, verbose);
 
     // prints graph to the outFile
     printGraph(head, outFile);
