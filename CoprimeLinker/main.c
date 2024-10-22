@@ -2,16 +2,18 @@
 // tidy-up code;
 // add java docs;
 // interact with graph.py
+// take max as argv
 
 #include <stdio.h>
 #include <stdlib.h>
 #import "nodes.h"
-#import "print.h"
+#import "toFile.h"
 #import "math.h"
 
 int main() {
     int max;
     char linkedCoprimesFilePath[64] = "../Data/linkedCoprimes.txt";
+    int debug = 0;
     
     // open file
     FILE *outFile = fopen(linkedCoprimesFilePath, "w");
@@ -21,11 +23,14 @@ int main() {
     }
 
     // input max
-    printf("Enter max: ");
-    scanf("%d", &max);
+    if (debug == 0) {
+        printf("Enter max: ");
+        scanf("%d", &max);
+    }
+    else max = debug;
 
     // generate graph of integers and their coprimes
-    Root* head = generateGraph(max);
+    Node* head = generateGraph(max);
 
     // prints graph to the outFile
     printGraph(head, outFile);

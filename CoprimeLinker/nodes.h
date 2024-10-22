@@ -2,73 +2,73 @@
 #include <stdlib.h>
 #import "nodes.h"
 #import "math.h"
+#import "toScreen.h"
 
-typedef struct Root {
+typedef struct Node {
     int value;
-    struct Root* nextRoot;
-    struct Coprime* nextCoprime;
-} Root;
+    int numberOfCoprimes;
+    struct Node** coprimeArray;
+    struct Node* nextNode;
+} Node;
 
-typedef struct Coprime {
-    int value;
-    struct Coprime* nextCoprime;
-} Coprime;
+// memory fiddling + code golfing = :)
+void linkCoprimes(Node* a, Node* b) {
+    // assign b as a coprime of a
+    (*a).numberOfCoprimes++;
+    (*a).coprimeArray = (Node**) realloc((*a).coprimeArray, (*a).numberOfCoprimes * (sizeof(Node)));
+    (*a).coprimeArray[(*a).numberOfCoprimes - 1] = b;
 
-void linkCoprimes(Root* node, int max) {
-    Coprime* coprime;
-    Coprime* oldCoprime;
+    if (a == b) return; // keeps this node from getting operated on twice
 
-    // 1 is always a coprime
-    coprime = (Coprime*) malloc(sizeof(Coprime));
-    (*coprime).value = 1;
-    (*node).nextCoprime = coprime;
-
-    // loop through each potential coprime from 2 to max (inclusive)
-    for (int coprimeCandidate = 2; coprimeCandidate < max + 1; coprimeCandidate++) {
-        if (gcd((*node).value, coprimeCandidate) == 1) {
-            oldCoprime = coprime;
-            coprime = (Coprime*) malloc(sizeof(Coprime));
-            (*coprime).value = coprimeCandidate;
-            (*oldCoprime).nextCoprime = coprime;
-        }
-    }
-    (*coprime).nextCoprime = NULL;
+    // assign a as a coprime of b
+    (*b).numberOfCoprimes++;
+    (*b).coprimeArray = (Node**) realloc((*b).coprimeArray, (*b).numberOfCoprimes * (sizeof(Node)));
+    (*b).coprimeArray[(*b).numberOfCoprimes - 1] = a;
 }
 
-Root* initializeNodes(int max) {
-    printf("Initializing nodes...\n");
+// finds every coprime for every node
+void findCoprimes(Node* node, int max) {
+    // loop through every node from [1,max]
+    while (node != NULL) {
+        Node* candidate = node;
+        // loop through every candidate from [node,max]
+        while (candidate != NULL) {
+            // check if node and candidate are coprimes
+            if (areCoprime((*node).value, (*candidate).value)) {
+                // link node and candidate as coprimes (bidirectional)
+                linkCoprimes(node, candidate);
+            }
+            // try next candidate
+            candidate = (*candidate).nextNode;
+        }
 
-    // initialize head node which contains the number 1
-    Root* head = (Root*) malloc(sizeof(Root));
-    (*head).value = 1;
-    (*head).nextRoot = NULL;
-    (*head).nextCoprime = NULL;
+        // print progress
+        printProgress((*node).value, max);
 
-    // initialize body nodes
-    Root* nodeOld = head;
-    Root* node;
-    for (int i = 2; i < max + 1; i++) {
-        node = (Root*) malloc(sizeof(Root));
-        (*node).value = i;       
-        (*nodeOld).nextRoot = node;
-        nodeOld = node;
+        // try next node
+        node = (*node).nextNode;
     }
-    (*nodeOld).nextCoprime = NULL;
-    (*nodeOld).nextRoot = NULL;
+}
 
-    return head;
+void initializeNodes(Node* node, int max) {
+    Node* lastNode;
+
+    printf("Initializing nodes...\n");
+    for (int value = 1; value < max + 1; value++) {
+        (*node).value = value;
+        (*node).numberOfCoprimes = 0;
+        lastNode = node;
+        node = (Node*) malloc(sizeof(Node));
+        (*lastNode).nextNode = node;
+    }
+    (*lastNode).nextNode = NULL;
 }
 
 // Generates graph of numbers that each link to their coprimes.
 // Returns a pointer to the head node of the graph (holding the number 1).
-Root* generateGraph(int max) {
-    Root* head = initializeNodes(max);
-    Root* node = head;
-    int i = 0;
-    while (node != NULL) {
-        linkCoprimes(node, max);
-        printf("Linked %d / %d nodes...\n", ++i, max);
-        node = (*node).nextRoot;
-    }
+Node* generateGraph(int max) {
+    Node* head = (Node*) malloc(sizeof(Node));
+    initializeNodes(head, max);
+    findCoprimes(head, max);
     return head;
 }
