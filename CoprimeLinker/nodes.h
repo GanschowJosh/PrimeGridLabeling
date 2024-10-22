@@ -1,11 +1,6 @@
 #ifndef nodes
 #define nodes
 
-// #include <stdio.h>
-// #include <stdlib.h>
-// #include "maths.h"
-// #include "files.h"
-
 typedef struct Node {
     int value;
     int numberOfCoprimes;

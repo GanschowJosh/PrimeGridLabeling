@@ -8,7 +8,7 @@ FILE* openFile();
 
 void closeFile(FILE* outFile);
 
-void printNode(Node* node, FILE* outFile);
+void writeNode(Node* node, FILE* outFile);
 
 void printGraph(Node* node, FILE* outFile);
 

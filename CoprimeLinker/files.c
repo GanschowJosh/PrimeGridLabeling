@@ -1,8 +1,7 @@
-//#include <stdio.h>
-//#include "nodes.h"
 #include <stdlib.h>
 #include "files.h"
 
+// relative file path for linked coprime output
 char linkedCoprimesFilePath[64] = "../Data/linkedCoprimes.txt";
 
 FILE* openFile() {
@@ -19,11 +18,11 @@ void closeFile(FILE* outFile) {
     fclose(outFile);
 }
 
-void printNode(Node* node, FILE* outFile) {
+void writeNode(Node* node, FILE* outFile) {
     // prints the value of node
     fprintf(outFile, "%d:", (*node).value);
 
-    // prints each of node's coprimes
+    // prints coprimes of node
     for (int i = 0; i < (*node).numberOfCoprimes; i++) {
         if ((*node).coprimeArray[i] == (*node).coprimeArray[i + 1]) continue; // prevents from printing twice
         fprintf(outFile, " %d", (*(*node).coprimeArray[i]).value);
@@ -31,11 +30,4 @@ void printNode(Node* node, FILE* outFile) {
 
     // newline
     fprintf(outFile, "\n");
-}
-
-void printGraph(Node* node, FILE* outFile) {
-    while (node != NULL) {
-        printNode(node, outFile);
-        node = (*node).nextNode;
-    }
 }

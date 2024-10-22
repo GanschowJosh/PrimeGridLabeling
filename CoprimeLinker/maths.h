@@ -7,8 +7,8 @@ int divides(int divisor, int dividend);
 /**
  <Returns whether integers a and b are coprime.>
  
- @param a first integer
- @param b second integer
+ @param a smaller natural number
+ @param b larger natural number
  @return 0: a and b are not coprime.
  @return 1: a and b are coprime.
  */

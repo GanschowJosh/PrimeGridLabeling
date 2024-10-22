@@ -1,8 +1,5 @@
-// #include <stdio.h>
 #include <stdlib.h>
-//#include "maths.c"
 #include "maths.h"
-//#include "files.c"
 #include "files.h"
 #include "nodes.h"
 
@@ -23,9 +20,8 @@ void linkCoprimes(Node* a, Node* b) {
 
 // finds every coprime for every node
 void findCoprimes(Node* node, int max) {
+    // prepare file to be written to
     FILE* outFile = openFile();
-
-    printf("Finding coprimes...\n");
 
     // loop through every node from [1,max]
     while (node != NULL) {
@@ -42,13 +38,12 @@ void findCoprimes(Node* node, int max) {
         }
 
         // print progress
-        // printf("%d / %d nodes linked...\n", (*node).value, max);
         printf("Wrote coprimes for %d of %d...\n", (*node).value, max);
 
-        // write to file
-        printNode(node, outFile);
+        // write node to file
+        writeNode(node, outFile);
 
-        // try next node
+        // prepare next node
         Node* lastNode = node;
         node = (*node).nextNode;
 
@@ -56,6 +51,7 @@ void findCoprimes(Node* node, int max) {
         free((*lastNode).coprimeArray);
     }
 
+    // finalize file
     closeFile(outFile);
 }
 
