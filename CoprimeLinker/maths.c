@@ -1,19 +1,10 @@
 #include "maths.h"
 
-// divides(a, b) is equivalent to the statement "a divides b".
 int divides(int divisor, int dividend) {
     if (dividend % divisor == 0) return 1;
     else return 0;
 }
 
-/**
- <Returns whether integers a and b are coprime.>
- 
- @param a smaller natural number
- @param b larger natural number
- @return 0: a and b are not coprime.
- @return 1: a and b are coprime.
- */
 int areCoprime(int a, int b) {
     // if any natural number other than 1 divides both a and b,
     // then a and b are not coprime.

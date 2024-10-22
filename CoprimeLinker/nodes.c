@@ -3,7 +3,6 @@
 #include "files.h"
 #include "nodes.h"
 
-// memory fiddling + code golfing = :)
 void linkCoprimes(Node* a, Node* b) {
     // assign b as a coprime of a
     (*a).numberOfCoprimes++;
@@ -18,7 +17,6 @@ void linkCoprimes(Node* a, Node* b) {
     (*b).coprimeArray[(*b).numberOfCoprimes - 1] = a;
 }
 
-// finds every coprime for every node
 void findCoprimes(Node* node, int max, int verbosity) {
     // prepare file to be written to
     FILE* outFile = openFile();
@@ -69,8 +67,6 @@ void initializeNodes(Node* node, int max, int verbosity) {
     (*lastNode).nextNode = NULL;
 }
 
-// Generates graph of numbers that each link to their coprimes.
-// Returns a pointer to the head node of the graph (holding the number 1).
 Node* generateGraph(int max, int verbosity) {
     Node* head = (Node*) malloc(sizeof(Node));
     initializeNodes(head, max, verbosity);
