@@ -1,8 +1,11 @@
-gcc ../CoprimeLinker/*.c -o ../CoprimeLinker/test
+source=../CoprimeLinker/*.c
+binary=../CoprimeLinker/test
+
+gcc $source -o $binary
 
 for n in {1..50}; 
 do
-    ../CoprimeLinker/test $n
+    $binary $n 0
     if [ "$(md5sum ../Data/testCases/linkedCoprimes-"$n".txt | awk '{print $1}')" == "$(md5sum ../Data/linkedCoprimes.txt | awk '{print $1}')" ];
         then echo "Passed case '$n'" 
     else 
@@ -10,4 +13,4 @@ do
     fi
 done
 
-rm ../CoprimeLinker/test
+rm $binary

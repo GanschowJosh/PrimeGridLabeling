@@ -13,8 +13,8 @@ FILE* openFile() {
     return outFile;
 }
 
-void closeFile(FILE* outFile) {
-    printf("Coprime graph written to: %s\n", linkedCoprimesFilePath);
+void closeFile(FILE* outFile, int verbosity) {
+    if (verbosity == 1) printf("Coprime graph saved as: %s\n", linkedCoprimesFilePath);
     fclose(outFile);
 }
 

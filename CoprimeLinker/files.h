@@ -6,7 +6,7 @@
 
 FILE* openFile();
 
-void closeFile(FILE* outFile);
+void closeFile(FILE* outFile, int verbosity);
 
 void writeNode(Node* node, FILE* outFile);
 

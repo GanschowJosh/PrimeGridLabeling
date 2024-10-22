@@ -19,7 +19,7 @@ void linkCoprimes(Node* a, Node* b) {
 }
 
 // finds every coprime for every node
-void findCoprimes(Node* node, int max) {
+void findCoprimes(Node* node, int max, int verbosity) {
     // prepare file to be written to
     FILE* outFile = openFile();
 
@@ -38,7 +38,7 @@ void findCoprimes(Node* node, int max) {
         }
 
         // print progress
-        printf("Wrote coprimes for %d of %d...\n", (*node).value, max);
+        if (verbosity == 1) printf("Wrote coprimes for %d of %d...\n", (*node).value, max);
 
         // write node to file
         writeNode(node, outFile);
@@ -51,12 +51,12 @@ void findCoprimes(Node* node, int max) {
         free((*lastNode).coprimeArray);
     }
 
-    // finalize file
-    closeFile(outFile);
+    // close file
+    closeFile(outFile, verbosity);
 }
 
-void initializeNodes(Node* node, int max) {
-    printf("Initializing nodes...\n");
+void initializeNodes(Node* node, int max, int verbosity) {
+    if (verbosity == 1) printf("Initializing nodes...\n");
 
     Node* lastNode;
     for (int value = 1; value < max + 1; value++) {
@@ -71,9 +71,9 @@ void initializeNodes(Node* node, int max) {
 
 // Generates graph of numbers that each link to their coprimes.
 // Returns a pointer to the head node of the graph (holding the number 1).
-Node* generateGraph(int max) {
+Node* generateGraph(int max, int verbosity) {
     Node* head = (Node*) malloc(sizeof(Node));
-    initializeNodes(head, max);
-    findCoprimes(head, max);
+    initializeNodes(head, max, verbosity);
+    findCoprimes(head, max, verbosity);
     return head;
 }
