@@ -22,7 +22,6 @@ def generate_prime_grid(n, m) -> MatrixGraph | None:
     """
     print(f"Generating {n}x{m} grid ({n*m} values)")
 
-    # grid = np.zeros((n, m), dtype=int)
     grid = MatrixGraph(n, m)
 
     sorted_numbers = most_factors_first(n * m)
@@ -49,11 +48,10 @@ def generate_prime_grid(n, m) -> MatrixGraph | None:
         else:
             if not stack:
                 return None
-            # Backtrack startin from here
+            # Backtrack starting from here
             while stack:
                 prev_index, prev_num = stack.pop()
                 row, col = divmod(prev_index, m)
-                # grid[row, col] = 0
                 grid.get_node_by_coord([row, col]).set_value(0)
                 sorted_numbers.append(prev_num)
                 tried_numbers.add(prev_num)
