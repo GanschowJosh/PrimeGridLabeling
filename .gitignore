@@ -4,3 +4,4 @@ PythonScripts/__pycache__
 CoprimeLinker/build/
 CoprimeLinker/a.out
 Data/linkedCoprimes.txt
+Debug/

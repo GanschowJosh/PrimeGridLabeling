@@ -52,8 +52,8 @@ void findCoprimes(Node* node, int max) {
         Node* lastNode = node;
         node = (*node).nextNode;
 
-        // free last node from memory
-        // free(lastNode);
+        // free last node's coprime array from memory
+        free((*lastNode).coprimeArray);
     }
 
     closeFile(outFile);
