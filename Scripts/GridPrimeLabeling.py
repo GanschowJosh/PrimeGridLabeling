@@ -35,7 +35,6 @@ def generate_prime_grid(n, m) -> MatrixGraph | None:
 
         for num in sorted_numbers:
             if num not in tried_numbers and is_valid(grid, row, col, num):
-                # grid[row, col] = num
                 grid.get_node_by_coord([row, col]).set_value(num)
                 stack.append((index, num))
                 sorted_numbers.remove(num)
