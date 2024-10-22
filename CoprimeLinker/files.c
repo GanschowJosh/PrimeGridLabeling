@@ -1,5 +1,6 @@
 //#include <stdio.h>
 //#include "nodes.h"
+#include <stdlib.h>
 #include "files.h"
 
 char linkedCoprimesFilePath[64] = "../Data/linkedCoprimes.txt";
@@ -8,7 +9,7 @@ FILE* openFile() {
     FILE *outFile = fopen(linkedCoprimesFilePath, "w");
     if (outFile == NULL) {
         printf("Error opening relative file path: '%s'\n", linkedCoprimesFilePath);
-        return NULL;
+        exit(1);
     }
     return outFile;
 }
