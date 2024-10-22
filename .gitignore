@@ -1,3 +1,7 @@
-Scripts/__pycache__
 Tests/__pycache__
-.vscode
+PythonScripts/__pycache__
+.vscode/
+CoprimeLinker/build/
+CoprimeLinker/a.out
+Data/linkedCoprimes.txt
+Debug/
