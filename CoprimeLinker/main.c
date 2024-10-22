@@ -3,25 +3,18 @@
 // add java docs;
 // interact with graph.py
 // take max as argv; delete debug mode in main
+// remove pointer to coprime array and just print coprime when is found
+
 
 #include <stdio.h>
-#include <stdlib.h>
-#import "nodes.h"
-#import "toFile.h"
-#import "math.h"
+//#include <stdlib.h>
+#include "nodes.h"
+//#include "nodes.c"
+//#include "files.h"
 
 int main() {
     int max;
-    char linkedCoprimesFilePath[64] = "../Data/linkedCoprimes.txt";
     int debug = 0;
-    int verbose = 0;
-    
-    // open file
-    FILE *outFile = fopen(linkedCoprimesFilePath, "w");
-    if (outFile == NULL) {
-        printf("Error opening relative file path: '%s'\n", linkedCoprimesFilePath);
-        return 1;
-    }
 
     // input max
     if (debug == 0) {
@@ -31,12 +24,8 @@ int main() {
     else max = debug;
 
     // generate graph of integers and their coprimes
-    Node* head = generateGraph(max, verbose);
+    generateGraph(max);
 
     // prints graph to the outFile
-    printGraph(head, outFile);
-
-    printf("Coprime graph written to: %s\n", linkedCoprimesFilePath);
-
-    fclose(outFile);
+    // printGraph(head, outFile);
 }

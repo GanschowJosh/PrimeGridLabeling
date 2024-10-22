@@ -1,4 +1,4 @@
-#import "nodes.h"
+#include "maths.h"
 
 // divides(a, b) is equivalent to the statement "a divides b".
 int divides(int divisor, int dividend) {

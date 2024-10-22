@@ -1,4 +1,22 @@
-#import "nodes.h"
+//#include <stdio.h>
+//#include "nodes.h"
+#include "files.h"
+
+char linkedCoprimesFilePath[64] = "../Data/linkedCoprimes.txt";
+
+FILE* openFile() {
+    FILE *outFile = fopen(linkedCoprimesFilePath, "w");
+    if (outFile == NULL) {
+        printf("Error opening relative file path: '%s'\n", linkedCoprimesFilePath);
+        return NULL;
+    }
+    return outFile;
+}
+
+void closeFile(FILE* outFile) {
+    printf("Coprime graph written to: %s\n", linkedCoprimesFilePath);
+    fclose(outFile);
+}
 
 void printNode(Node* node, FILE* outFile) {
     // prints the value of node
