@@ -310,6 +310,9 @@ def print_2d_matrix_graph(graph: MatrixGraph, mute=False) -> str:
     if len(graph.dim) != 2:
         raise ValueError("MatrixGraph with other than 2 dimensions provided")
 
+    max_length = max(len(str(graph.get_node_by_coord([j, i]).value))
+                 for i in range(graph.dim[1]) for j in range(graph.dim[0]))
+
     graph_string = ""
 
     for i in range(graph.dim[1]):
@@ -317,7 +320,7 @@ def print_2d_matrix_graph(graph: MatrixGraph, mute=False) -> str:
             value = str(graph.get_node_by_coord([j, i]).value)
             # value = "0" if value is None else str(value) # now, 0 is not treated as None
             if not mute:
-                print(value + " " * (5 - len(value)), end="")
+                print(value + " " * (max_length - len(value)), end="")
             graph_string += value + " " * (5 - len(value))
         graph_string += "\n"
 
