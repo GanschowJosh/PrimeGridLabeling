@@ -23,7 +23,10 @@ def generate_prime_grid(n, m, swap_inx = 0) -> MatrixGraph | None:
     grid = MatrixGraph(n, m)
 
     nums = most_factors_first(n * m)
-    nums[0], nums[swap_inx] = nums[swap_inx], nums[0]
+
+    # Pop element with index swap_inx and insert it into the beginning
+    popped = nums.pop(swap_inx)
+    nums.insert(0, popped)
     stack = []
     index = 0
 
@@ -65,6 +68,7 @@ def generate_prime_grid(n, m, swap_inx = 0) -> MatrixGraph | None:
                 if len(tried_numbers) < len(nums):
                     break
             else:
+                # todo remove the need for recursion
                 return generate_prime_grid(n, m, swap_inx+1)
     # Our grid is either None or completely filled
     return grid if index == n * m else None
