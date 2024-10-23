@@ -29,10 +29,15 @@ def generate_prime_grid(n, m) -> MatrixGraph | None:
     index = 0
 
     while index < n * m:
+        # divmod returns the division result, then the remainder
         row, col = divmod(index, m)
         placed = False
         tried_numbers = set()
 
+        # Try to place any number in the remaining stack
+        # If a valid number is found, place it and append to stack
+        # Otherwise, we didn't find a valid number and `placed = False`
+        # Therefore we must backtrack
         for num in sorted_numbers:
             if num not in tried_numbers and is_valid(grid, row, col, num):
                 grid.get_node_by_coord([row, col]).set_value(num)
@@ -42,6 +47,9 @@ def generate_prime_grid(n, m) -> MatrixGraph | None:
                 break
             tried_numbers.add(num)
 
+        # If we got a valid number placed, we're good to go.
+        # Otherwise, if we can't backtrack any further, there's no valid configuration
+        # But if we can backtrack, 
         if placed:
             index += 1
         else:
@@ -59,5 +67,9 @@ def generate_prime_grid(n, m) -> MatrixGraph | None:
                     break
             else:
                 return None
-    # If the placement of all numbers is valid, return the grid
+    # Our grid is either None or completely filled
     return grid if index == n * m else None
+
+
+grid = generate_prime_grid(3, 3)
+print_2d_matrix_graph(grid)
