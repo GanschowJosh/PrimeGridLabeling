@@ -20,6 +20,7 @@ class Node:
         self.neighbors = neighbors if neighbors is not None else []
         self.value = value
 
+
     def get_neighbors(self) -> list["Node"]:
         """
             Returns a list of a Node's neighbors
@@ -27,11 +28,14 @@ class Node:
         """
         return self.neighbors.copy()
 
+
     def set_value(self, n: int):
         self.value = n
 
+
     def get_value(self) -> int:
         return self.value
+
 
     @classmethod
     def nodes(cls, n: int) -> list["Node"]:
@@ -55,6 +59,7 @@ class Node:
         """
         return [cls() for _ in range(n)]
 
+
     # Link an arbitrary number of nodes.
     # This only defines a bidirectional link
     # Executing this on every node in a graph creates a complete graph
@@ -76,6 +81,7 @@ class Node:
         :return:
         """
         return f"Node {self.__hash__()}: {self.value}"
+
 
 class Graph:
     """
@@ -120,9 +126,6 @@ class Graph:
 
     def get_node(self, n: int) -> Node:
         return self.nodes[n]
-
-    def get_nodes(self) -> list[Node]:
-        return self.nodes.copy()
 
     def nodes_by_degree(self) -> list[Node]:
         """
@@ -189,7 +192,7 @@ class Graph:
         """
             Returns an svg representation of a the graph as an SVG file
         """
-        return check_output(["dot", "-Tsvg", f"-K{layout_engine}"], input=self.gen_dot_graph())
+        return subprocess.check_output(["dot", "-Tsvg", f"-K{layout_engine}"], input=self.gen_dot_graph())
     
     def save_svg(self, path: str, layout_engine: str = "circo"):
         """
@@ -260,7 +263,7 @@ class MatrixGraph(Graph):
         an 'n' dimensional tessellation of hypercubes (a grid),
         are linked to their orthagonally adjacent neighbors
     """
-
+    
     # yeah, this is something better handled by numpy. I'll switch to that,
     # but this'll get the project off the ground
     @staticmethod
@@ -271,7 +274,7 @@ class MatrixGraph(Graph):
         :return:
         """
         return [sum(x) for x in zip(*coords)]
-
+    
     def is_valid_coordinate(self, coords: list[int]):
         """
             Check if a given coordinate lies within the valid coordinate space of the graph
@@ -282,6 +285,7 @@ class MatrixGraph(Graph):
             if coords[i] >= self.dim[i] or coords[i] < 0:
                 return False
         return True
+
 
     def orth_adj_vect(self):
         """
@@ -294,6 +298,7 @@ class MatrixGraph(Graph):
             yield vect.copy()
             vect[i] = -1
             yield vect.copy()
+
 
     def possible_coords(self):
         """
@@ -329,7 +334,7 @@ class MatrixGraph(Graph):
             index += coord[i] * stride
             stride *= self.dim[i]
         return index
-
+    
     def get_node_by_coord(self, coord: list[int]):
         """
             Get any node in the graph by coordinate
@@ -366,7 +371,6 @@ def print_2d_matrix_graph(graph: MatrixGraph, mute=False) -> str:
         every member node to std out if mute = False
 
         Also returns the generated string representation, regardless of mute's value
-    :param mute:
     :param graph:
     :return:
     """
@@ -374,15 +378,14 @@ def print_2d_matrix_graph(graph: MatrixGraph, mute=False) -> str:
     if len(graph.dim) != 2:
         raise ValueError("MatrixGraph with other than 2 dimensions provided")
 
-    max_len = len(str(max((node.value for node in graph.get_nodes()))))
-
     graph_string = ""
 
     for i in range(graph.dim[1]):
         for j in range(graph.dim[0]):
             value = str(graph.get_node_by_coord([j, i]).value)
             # value = "0" if value is None else str(value) # now, 0 is not treated as None
-            print(value + " " * (max_len + 1 - len(value)), end="")
+            if mute:
+                print(value + " " * (5 - len(value)), end="")
             graph_string += value + " " * (5 - len(value))
         graph_string += "\n"
 
