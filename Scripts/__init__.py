@@ -1,1 +1,1 @@
-# Allows `Scripts` folder to be used as a module
+#allows `Scripts` folder to be used as a module

@@ -1,77 +1,192 @@
-from math import gcd
-from graph import *
-from collections import deque
-from prime_tools import most_factors_first
-from sys import setrecursionlimit
+import random
+import sys
+import time
+try:
+    from Scripts.graph import MatrixGraph, print_2d_matrix_graph
+except:
+    from graph import MatrixGraph, print_2d_matrix_graph
+sys.setrecursionlimit(1000000000)
 
-setrecursionlimit(20000000)
 
-def is_valid(matrix: MatrixGraph, i, j, num) -> bool:
+def count_unique_factors(n: int) -> int:
     """
-    Returns a boolean value indicating whether a number is coprime with values of
-    every filled node adjacent to the given grid coordinate
+        Returns an integer enumerating the number of unique prime factors of the given integer.
+    :param n:
+    :return:
     """
-    neighbors_value_raw = (neighbor.get_value() for neighbor in matrix.get_node_by_coord([i, j]).get_neighbors())
-    neighbors_value = (value for value in neighbors_value_raw if value is not None)
-    return all(gcd(num, neighbor_value) == 1 for neighbor_value in neighbors_value)
+    count = 0
+    for i in range(2, n):
+        if n % i == 0:
+            count += 1
+            while n % i == 0:
+                n = n // i
+    return count
 
 
-# Might need to init MatrixGraph so that all nodes are zero
-def generate_prime_grid(n, m, swap_inx = 0) -> MatrixGraph | None:
+def gcd(a, b):
+    while b:
+        a, b = b, a % b
+    return a
+
+
+def areCoprime(a, b) -> bool:
     """
-    Backtracking approach that uses most_factors_first to try to place numbers
-    with more unique prime factors first when the likelihood of finding a valid position for
-    that number is higher
+        Returns a boolean value indicating whether the two integers given are coprime
+
+        That is, if the integers share no unique prime factors
+    :param a:
+    :param b:
+    :return:
     """
-    grid = MatrixGraph(n, m)
+    return gcd(a, b) == 1
 
-    nums = most_factors_first(n * m)
 
-    # Pop element with index swap_inx and insert it into the beginning
-    popped = nums.pop(swap_inx)
-    nums.insert(0, popped)
-    stack = []
-    index = 0
+def isValid(matrix: MatrixGraph, coord: list[int], value: int) -> bool:
+    """
+        Takes a MatrixGraph object, the coordinate of a node, and an integer value
 
-    while index < n * m:
-        # divmod returns the division result, then the remainder
-        row, col = divmod(index, m)
-        placed = False
-        tried_numbers = set()
+        Returns a boolean indicating if that value is coprime with the values of all the neighbors of
+        the node at the given coordinate.
 
-        # Try to place any number in the remaining stack
-        # If a valid number is found, place it and append to stack
-        # Otherwise, we didn't find a valid number and `placed = False`
-        # Therefore we must backtrack
-        for num in nums:
-            if num not in tried_numbers and is_valid(grid, row, col, num):
-                grid.get_node_by_coord([row, col]).set_value(num)
-                stack.append((index, num))
-                nums.remove(num)
-                placed = True
-                break
-            tried_numbers.add(num)
+    :param matrix:
+    :param coord:
+    :param value:
+    :return:
+    """
+    neighbor_values = (node.get_value() for node in matrix.get_node_by_coord(coord).get_neighbors())
+    return all(areCoprime(value, neighbor_value) for neighbor_value in neighbor_values if neighbor_value is not None)
 
-        # If we got a valid number placed, we're good to go.
-        # Otherwise, if we can't backtrack any further, there's no valid configuration
-        # But if we can backtrack, 
-        if placed:
-            index += 1
-        else:
-            if not stack:
-                return None
-            # Backtrack starting from here
-            while stack:
-                prev_index, prev_num = stack.pop()
-                row, col = divmod(prev_index, m)
-                grid.get_node_by_coord([row, col]).set_value(0)
-                nums.append(prev_num)
-                tried_numbers.add(prev_num)
-                index = prev_index
-                if len(tried_numbers) < len(nums):
+
+def generateCoprimeMatrix_old(n: int, m: int) -> list[list[int]]:
+    """
+        Attempts to generate and return a two-dimensional list where each element is coprime with
+        all of its orthogonal neighbors. (deprecated)
+    :param n:
+    :param m:
+    :return:
+    """
+    matrix = [[0 for _ in range(m)] for _ in range(n)]
+    numbers = list(range(1, n * m + 1))
+    random.shuffle(numbers)
+
+    for i in range(n):
+        for j in range(m):
+            for num in numbers:
+                if isValid(matrix, i, j, num):
+                    matrix[i][j] = num
+                    numbers.remove(num)
                     break
             else:
-                # todo remove the need for recursion
-                return generate_prime_grid(n, m, swap_inx+1)
-    # Our grid is either None or completely filled
-    return grid if index == n * m else None
+                # If no valid number is found, start over
+                return generateCoprimeMatrix_old(n, m)
+
+    return matrix
+
+
+def generateCoprimeMatrix(n, m) -> MatrixGraph:
+    """
+        Given dimensions n, m, generates and returns a fully labeled MatrixGraph
+        in which every node's value is coprime with the values of its neighbors.
+        (i.e., returns a new MatrixGraph with a valid prime labeling)
+    :param n:
+    :param m:
+    :return:
+    """
+    maxFactors = 1
+    for i in range(1, n * m + 1):
+        if count_unique_factors(i) > count_unique_factors(maxFactors):
+            maxFactors = i
+
+    def generator(n, m, maxFactors):
+        """
+            An interior function of generateCoprimeMatrix, used to isolate
+            logic needed in the recursive step. The use of generateCoprimeMatrix as an outer function
+            also hides the use of maxFactors from the outer function caller.
+        :param n:
+        :param m:
+        :param maxFactors:
+        :return:
+        """
+        matrix_graph = MatrixGraph(n, m)
+        numbers = list(range(2, n * m + 1))
+        random.shuffle(numbers)
+        # move number with max factors to the beginning and 1 to the end
+        numbers.remove(maxFactors)
+        numbers.insert(0, maxFactors)
+        numbers.append(1)
+
+        for coord in matrix_graph.possible_coords():
+            for num in numbers:
+                if isValid(matrix_graph, coord, num):
+                    matrix_graph.get_node_by_coord(coord).set_value(num)
+                    numbers.remove(num)
+                    break
+            else:
+                # If no valid number is found, start over
+                return generator(n, m, maxFactors)
+
+        return matrix_graph
+
+    return generator(n, m, maxFactors)
+
+
+def checkMatrix(matrix: MatrixGraph) -> bool:
+    """
+        For every node in a MatrixGraph, check that it's value is coprime with the values of it's neighbors
+
+        Returns a boolean value
+    :param matrix:
+    :return:
+    """
+
+    for coord in matrix.possible_coords():
+
+        # This could be done way cleaner, but not using isValid.
+        # I want to rewrite this script to not use the current isValid, but not yet - Burke
+        if not isValid(matrix, coord, matrix.get_node_by_coord(coord).get_value()):
+            return False, tuple(coord)
+
+    return True, None
+
+
+def printMatrix(matrix: list[list[int]]):
+    """
+        Format and print a two-dimensional list of ints to stdout
+    :param matrix:
+    :return:
+    """
+    for row in matrix:
+        print(" ".join(f"{num:3d}" for num in row))
+
+
+if __name__ == "__main__":
+
+    n, m = 8, 8
+
+    total_time = 0
+    epoch = 30
+    for i in range(epoch):
+        print("|", end="")
+    print()
+
+    # refactoring isValid to use MatrixGraph objects broke the old algorithm. If you want that
+    # ported to the graph library too I'll do that - Burke
+    # #original algorithm
+    # for i in range(epoch):
+    #     NOW = time.time()
+    #     generateCoprimeMatrix_old(n, m)
+    #     total_time+=time.time()-NOW
+    #     print("|",end="")
+    # print()
+    # print(f"Original algorithm average for {n}x{m} grid {total_time / epoch} seconds ({epoch} epochs)")
+
+    total_time = 0
+    for i in range(epoch):
+        NOW = time.time()
+        matrix = generateCoprimeMatrix(n, m)
+        total_time += time.time() - NOW
+        print("|", end="")
+    print()
+    print(f"Modified algorithm average for {n}x{m} grid {total_time / epoch} seconds ({epoch} epochs)")
+
+    print_2d_matrix_graph(matrix)

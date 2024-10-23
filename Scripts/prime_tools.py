@@ -1,6 +1,3 @@
-from math import gcd  # using math.gcd instead of our own
-
-
 def prime_factors(x: int) -> list[int]:
     """
         returns a sorted list of prime factors of x
@@ -58,6 +55,12 @@ def count_unique_factors(n: int) -> int:
             while n % i == 0:
                 n = n // i
     return count
+
+
+def gcd(a, b):
+    while b:
+        a, b = b, a % b
+    return a
 
 
 def coprime(a, b) -> bool:
