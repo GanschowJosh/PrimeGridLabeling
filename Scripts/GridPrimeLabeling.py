@@ -68,7 +68,3 @@ def generate_prime_grid(n, m, swap_inx = 0) -> MatrixGraph | None:
                 return generate_prime_grid(n, m, swap_inx+1)
     # Our grid is either None or completely filled
     return grid if index == n * m else None
-
-
-grid = generate_prime_grid(20, 20)
-print_2d_matrix_graph(grid)
