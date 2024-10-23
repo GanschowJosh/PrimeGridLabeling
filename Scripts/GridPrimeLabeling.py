@@ -2,6 +2,9 @@ from math import gcd
 from graph import *
 from collections import deque
 from prime_tools import most_factors_first
+from sys import setrecursionlimit
+
+setrecursionlimit(20000000)
 
 def is_valid(matrix: MatrixGraph, i, j, num) -> bool:
     """
