@@ -42,34 +42,6 @@ def prime_factors(x: int) -> list[int]:
     return sorted(l_filtered)
 
 
-# My old, slower coprime implementation
-# leaving in to confirm the new coprime() from John behaves the same as I expect it to
-# def coprime(x: int, y: int):
-#     """
-#         checks if two integers are relatively prime
-#
-#         That is, if the only prime factor they share is '1'
-#
-#         returns a boolean value
-#
-#         Example:
-#
-#         rel_prime(5, 10) -> False
-#         rel_primt(5, 13) -> True
-#     :param x:
-#     :param y:
-#     :return:
-#     """
-#
-#     x_fact = set(prime_factors(x))
-#     y_fact = set(prime_factors(y))
-#
-#     for i in x_fact:
-#         if i in y_fact and i != 1:
-#             return False
-#
-#     return True
-
 def count_unique_factors(n: int) -> int:
     """
     Returns an integer enumerating the number of unique prime factors of the given integer.

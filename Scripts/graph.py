@@ -20,7 +20,6 @@ class Node:
         self.neighbors = neighbors if neighbors is not None else []
         self.value = value
 
-
     def get_neighbors(self) -> list["Node"]:
         """
             Returns a list of a Node's neighbors
@@ -28,14 +27,11 @@ class Node:
         """
         return self.neighbors.copy()
 
-
     def set_value(self, n: int):
         self.value = n
 
-
     def get_value(self) -> int:
         return self.value
-
 
     @classmethod
     def nodes(cls, n: int) -> list["Node"]:
@@ -59,7 +55,6 @@ class Node:
         """
         return [cls() for _ in range(n)]
 
-
     # Link an arbitrary number of nodes.
     # This only defines a bidirectional link
     # Executing this on every node in a graph creates a complete graph
@@ -81,7 +76,6 @@ class Node:
         :return:
         """
         return f"Node {self.__hash__()}: {self.value}"
-
 
 class Graph:
     """
@@ -266,7 +260,7 @@ class MatrixGraph(Graph):
         an 'n' dimensional tessellation of hypercubes (a grid),
         are linked to their orthagonally adjacent neighbors
     """
-    
+
     # yeah, this is something better handled by numpy. I'll switch to that,
     # but this'll get the project off the ground
     @staticmethod
@@ -277,7 +271,7 @@ class MatrixGraph(Graph):
         :return:
         """
         return [sum(x) for x in zip(*coords)]
-    
+
     def is_valid_coordinate(self, coords: list[int]):
         """
             Check if a given coordinate lies within the valid coordinate space of the graph
@@ -288,7 +282,6 @@ class MatrixGraph(Graph):
             if coords[i] >= self.dim[i] or coords[i] < 0:
                 return False
         return True
-
 
     def orth_adj_vect(self):
         """
@@ -301,7 +294,6 @@ class MatrixGraph(Graph):
             yield vect.copy()
             vect[i] = -1
             yield vect.copy()
-
 
     def possible_coords(self):
         """
@@ -337,7 +329,7 @@ class MatrixGraph(Graph):
             index += coord[i] * stride
             stride *= self.dim[i]
         return index
-    
+
     def get_node_by_coord(self, coord: list[int]):
         """
             Get any node in the graph by coordinate
