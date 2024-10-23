@@ -192,7 +192,7 @@ class Graph:
         """
             Returns an svg representation of a the graph as an SVG file
         """
-        return check_output(["dot", "-Tsvg", f"-K{layout_engine}"], input=self.gen_dot_graph())
+        return subprocess.check_output(["dot", "-Tsvg", f"-K{layout_engine}"], input=self.gen_dot_graph())
     
     def save_svg(self, path: str, layout_engine: str = "circo"):
         """
