@@ -1,6 +1,6 @@
 try:
     from prime_tools import coprime
-except:
+except ImportError:
     from Scripts.prime_tools import coprime
 
 # For graphviz
@@ -385,8 +385,8 @@ def print_2d_matrix_graph(graph: MatrixGraph, mute=False) -> str:
             value = str(graph.get_node_by_coord([j, i]).value)
             # value = "0" if value is None else str(value) # now, 0 is not treated as None
             if not mute:
-                print(value + " " * (5 - len(value)), end="")
-            graph_string += value + " " * (5 - len(value))
+                print(value + " " * (10 - len(value)), end="")
+            graph_string += value + " " * (10 - len(value))
         graph_string += "\n"
 
     if not mute:
