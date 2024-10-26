@@ -19,6 +19,8 @@ grid on my i7-9700 in 0.63 seconds, and a 115x115 grid in 25.44 seconds!
 
 It's also fair to note that (in my opinion), this is fairly **simple to install** and run on your own computer, and see all the grids that the algorithm generated.
 
+The generator.py script now features multiprocessing to take advantage of multiple cores when generating grid ranges. In my testing, this brought the generation of NxN grids 1...40 from 30 seconds to just under 9 on an eight-core CPU.
+
 # Try this out!
 ## Prereqs
 Download the ZIP for this repo.
