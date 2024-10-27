@@ -29,7 +29,7 @@ Clone the repo with
 Install [Python](https://www.python.org/downloads/)
 - tested on 3.10.6 and 3.11.2, but any of the latest versions should work.
 
-## mypy compilation for faster results (Linux)
+## Mypy compilation for faster results (Linux)
 You may copy these commands to build a virtual environment (venv) and install dependencies.
 - Learn more about [Python Virtual Environments](https://docs.python.org/3/library/venv.html)
 ```bash
@@ -43,23 +43,26 @@ pip install -r requirements.txt  # Install dependencies within your venv
 Compile the Scripts folder using
 > `mypyc Scripts`
 
-Ready to go! run `runner.py`
-Note: As with all compiled programs, you must recompile if you make changes to your programs, such as modifying parameters in `Scripts/generator.py`
+**Note**: As with all compiled programs, you must recompile if you make changes to your programs, such as modifying parameters in `Scripts/generator.py`
 
+## Program Usage
+Whether or not your Python files were compiled, you may now run `runner.py` from the repo directory (the `PrimeGridLabeling` folder that was created when you ran `git clone`)
 
-## Okay, show me the results!!
-Running `generator.py` is the easiest way to demonstrate this script in action.
-
-Steps:
-- Leave the START_N as it is
-- Set END_N to be the upper bound for how big NxN array you wish to create
+If you wish to configure how large of grids to generate:
+- Navigate to `Scripts/generator.py`
+- `START_N` is the lower bound for NxN grid generation, you may leave it at 1.
+- Set `END_N` to be the upper bound for how big NxN array you wish to create
 - 64 is a good number for the upper bound, 48 if your computer is a bit slow
-- Run the script
-- See your CPU's hard work in folder `grids`, which includes a `_successful-grids.txt` list of all NxN grids the script could generate, and a corresponding txt file for each grid.
+- Run `runner.py`
+- See your CPU's hard work in folder `grids`.
+
+Remember to remove old compilation files and recompile folder `Scripts` if you made modifications.
+
 
 # Findings
 A previous issue of the original implementation of my algorithm was the fact that the algorithm could only generate grids with the most-factorable number in the top-left corner. This issue has been fixed, and the algorithm has successfully generated grids of 60x60+ sizes.
 > Previously, successful grids up to N=155 were `1 2 3 4 5 6 7 8 9 10 11 14 15 16 17 18 19 25 27 28 29 30 31 34 37 45 61 113 115`.
+
 These successful grids, as can be concluded from the issue, all had solutions with the most factorable number in the top left corner!
 
 We have yet to calculate the time complexity of the algorithm and gather data on the trendline of data size vs. time to calculate the grid.
