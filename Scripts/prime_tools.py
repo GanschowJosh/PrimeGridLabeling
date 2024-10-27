@@ -20,7 +20,7 @@ def prime_factors(x: int) -> list[int]:
 
     l = [x]
 
-    def divides(a, b):
+    def divides(a: int, b: int) -> bool:
         return b // a == b / a
 
     last_cycle = False
@@ -59,7 +59,7 @@ def count_unique_factors(n: int) -> int:
     return count
 
 
-def coprime(a, b) -> bool:
+def coprime(a: int, b: int) -> bool:
     """
     Returns a boolean value indicating whether the two integers given are coprime
 
@@ -71,7 +71,7 @@ def coprime(a, b) -> bool:
     return gcd(a, b) == 1
 
 
-def factors(n) -> set[set[int]]:
+def factors(n: int) -> set[set[int]]:
     """
     Returns a set of factors each integer 1...n
     """
@@ -85,7 +85,7 @@ def factors(n) -> set[set[int]]:
     return factors
 
 
-def num_of_factors(n) -> set[set[int]]:
+def num_of_factors(n: int) -> set[set[int]]:
     """
     Returns number of factors of each integer 1...n
     """
@@ -94,7 +94,7 @@ def num_of_factors(n) -> set[set[int]]:
     return num_factors
 
 
-def most_factors_first(n) -> list[list[int]]:
+def most_factors_first(n: int) -> list[list[int]]:
     """
     Returns a list of integers sorted backwards by how many factors they have.
     This function helps bias generate_prime_grid by trying to choose to get rid of the

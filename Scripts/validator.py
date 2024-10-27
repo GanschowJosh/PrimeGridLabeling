@@ -3,7 +3,7 @@ from math import gcd
 FILENAME = "grids/20x20.txt"
 
 
-def get_neighbors(i, j, rows, cols):
+def get_neighbors(i: int, j: int, rows: int, cols: int) -> list[int]:
     """
     Return the orthogonal neighbors of (i, j)
     """
@@ -19,13 +19,13 @@ def get_neighbors(i, j, rows, cols):
     return neighbors
 
 
-def is_valid(grid, i, j, num, m, n):
+def is_valid(grid: list[list[int]], i: int, j: int, num: int, m: int, n: int) -> bool:
     """Check if num is coprime with all its orthogonal neighbors."""
     neighbors = get_neighbors(i, j, m, n)
     return all(gcd(num, grid[ni][nj]) == 1 for ni, nj in neighbors if grid[ni][nj] != 0)
 
 
-def validate_prime_labeled_grid(filename):
+def validate_prime_labeled_grid(filename: str) -> bool:
     """
     Validate that all orthogonal neighbors in the grid are coprime.
     Print where verification failed, if applicable.

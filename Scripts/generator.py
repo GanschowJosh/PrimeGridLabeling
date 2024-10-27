@@ -15,7 +15,7 @@ FILE_FORMAT = "{i}x{i}.txt"  # what the files will be named
 makedirs(OUTPUT_FOLDER, exist_ok=True)
 
 
-def generate_grid(i):
+def generate_grid(i: int) -> str:
     start = perf_counter()  # keep track of elapsed time
 
     # Perform the generation
@@ -37,9 +37,6 @@ if __name__ == "__main__":
     total_start = perf_counter()
     with Pool() as pool:
         results = pool.map(generate_grid, range(START_N, END_N + 1))
-    
-    for result in results:
-        print(result)
     
     total_time = round(perf_counter() - total_start, 2)
     print(f"All done!! ({total_time}s)")

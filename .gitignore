@@ -1,7 +1,15 @@
+# Compiled files
+Scripts/__pycache__
+Tests/__pycache__
+.mypy_cache
+build
 
-Scripts/2.0/__pycache__/
-Scripts/__pycache__/
-Tests/__pycache__/
-.vscode/
-.idea/
+# IDE folders (VSCode and PyCharm)
+.vscode
+.idea
+
+# Generated grids folder
 grids
+
+# Default virtual environment
+primegrid

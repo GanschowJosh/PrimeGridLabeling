@@ -223,7 +223,6 @@ class Graph:
             f.write(dot)
 
 
-
 class CompleteCoprimeGraph(Graph):
     """
         Defines Graph with n nodes labelled 1 through n

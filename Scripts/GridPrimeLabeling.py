@@ -1,11 +1,13 @@
 from math import gcd
+import time
 from graph import *
 from prime_tools import most_factors_first
 
 
-def is_valid(matrix: MatrixGraph, i, j, num) -> bool:
+def is_valid(matrix: MatrixGraph, i: int, j: int, num: int) -> bool:
     """
-    Returns a boolean value indicating whether a number is coprime with values of
+    Returns a boolean value indicating whether 
+    a number is coprime with values of
     every filled node adjacent to the given grid coordinate
     """
     neighbors_value_raw = (neighbor.get_value() for neighbor in matrix.get_node_by_coord([i, j]).get_neighbors())
@@ -13,7 +15,7 @@ def is_valid(matrix: MatrixGraph, i, j, num) -> bool:
     return all(gcd(num, neighbor_value) == 1 for neighbor_value in neighbors_value)
 
 
-def generate_prime_grid(n, m) -> MatrixGraph | None:
+def generate_prime_grid(n: int, m: int) -> MatrixGraph | None:
     """
     Backtracking approach that uses most_factors_first to try to place numbers
     with more unique prime factors first when the likelihood of finding a valid position for
@@ -80,3 +82,8 @@ def generate_prime_grid(n, m) -> MatrixGraph | None:
 
     # Wow, we couldn't find a prime-labeled grid?
     return None # if the code reaches this, we're screwed.
+
+
+start = time.perf_counter()
+grid = generate_prime_grid(40, 40)
+print(time.perf_counter() - start)

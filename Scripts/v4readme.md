@@ -23,17 +23,22 @@ The generator.py script now features multiprocessing to take advantage of multip
 
 # Try this out!
 ## Prereqs
-Download the ZIP for this repo.
+Clone the repo with 
+> `git clone https://github.com/GanschowJosh/PrimeGridLabeling.git`
 
 Install [Python](https://www.python.org/downloads/)
 - tested on 3.10.6 and 3.11.2, but any of the latest versions should work.
 
-This script only needs NumPy to work, so install it with
-> `pip install numpy`
-
-On linux machines, pip may complain about externally managed environments;
-
-In that case, you may need to use a [virtual environment](https://docs.python.org/3/library/venv.html).
+## mypy compilation for faster results (Linux)
+You may copy these commands to build a virtual environment (venv) and install dependencies.
+- Learn more about [Python Virtual Environments](https://docs.python.org/3/library/venv.html)
+```bash
+sudo apt update                  # Update repositories
+sudo apt install virtualenv      # Install virtualenv with apt
+virtualenv primegrid -p python3  # Create a virtual environment `primegrid`
+source primegrid/bin/activate    # ...activate it
+pip install -r requirements.txt  # Install dependencies within your venv
+```
 
 ## Okay, show me the results!!
 Running `generator.py` is the easiest way to demonstrate this script in action.
@@ -45,7 +50,7 @@ Steps:
 - Run the script
 - See your CPU's hard work in folder `grids`, which includes a `_successful-grids.txt` list of all NxN grids the script could generate, and a corresponding txt file for each grid.
 
-# Interesting findings
+# Findings
 A previous issue of the original implementation of my algorithm was the fact that the algorithm could only generate grids with the most-factorable number in the top-left corner. This issue has been fixed, and the algorithm has successfully generated grids of 60x60+ sizes.
 > Previously, successful grids up to N=155 were `1 2 3 4 5 6 7 8 9 10 11 14 15 16 17 18 19 25 27 28 29 30 31 34 37 45 61 113 115`.
 These successful grids, as can be concluded from the issue, all had solutions with the most factorable number in the top left corner!
