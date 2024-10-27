@@ -6,7 +6,7 @@ from os import makedirs
 
 # Range of NxN grids to generate
 START_N = 1
-END_N = 20
+END_N = 40
 
 OUTPUT_FOLDER = "grids/"  # ensure '/' at the end
 FILE_FORMAT = "{i}x{i}.txt"  # what the files will be named
@@ -16,7 +16,6 @@ makedirs(OUTPUT_FOLDER, exist_ok=True)
 
 
 def generate_grid(i: int) -> str:
-    print(f"Starting {i}x{i}")
     start = perf_counter()  # keep track of elapsed time
 
     # Perform the generation
@@ -26,12 +25,12 @@ def generate_grid(i: int) -> str:
     # If valid grid exists, save it
     if prime_grid is not None:
         print(f"Success! ({i}x{i} grid took {delta}s)")
-        # Save successful grids in output directory
         with open(OUTPUT_FOLDER + FILE_FORMAT.format(i=i), "w") as f:
             f.write(print_2d_matrix_graph(prime_grid, True))
-        return f"Success! {i}x{i} grid in {delta}s"
+        return f"Success! ({i}x{i} grid took {delta}s)"
     else:  # Grid generation failed
-        return f"FAILED!  {i}x{i} grid ({delta}s)"
+        print(f"FAILED! ({i}x{i} grid took {delta}s)")
+        return f"FAILED! ({i}x{i} grid took {delta}s)"
 
 
 def main():
