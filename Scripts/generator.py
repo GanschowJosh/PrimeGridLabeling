@@ -1,12 +1,12 @@
-from GridPrimeLabeling import generate_prime_grid
-from graph import print_2d_matrix_graph
+from Scripts.GridPrimeLabeling import generate_prime_grid
+from Scripts.graph import print_2d_matrix_graph
 from multiprocessing import Pool
 from time import perf_counter
 from os import makedirs
 
 # Range of NxN grids to generate
 START_N = 1
-END_N = 40
+END_N = 20
 
 OUTPUT_FOLDER = "grids/"  # ensure '/' at the end
 FILE_FORMAT = "{i}x{i}.txt"  # what the files will be named
@@ -16,6 +16,7 @@ makedirs(OUTPUT_FOLDER, exist_ok=True)
 
 
 def generate_grid(i: int) -> str:
+    print(f"Starting {i}x{i}")
     start = perf_counter()  # keep track of elapsed time
 
     # Perform the generation
@@ -33,10 +34,10 @@ def generate_grid(i: int) -> str:
         return f"FAILED!  {i}x{i} grid ({delta}s)"
 
 
-if __name__ == "__main__":
+def main():
     total_start = perf_counter()
     with Pool() as pool:
         results = pool.map(generate_grid, range(START_N, END_N + 1))
-    
+
     total_time = round(perf_counter() - total_start, 2)
     print(f"All done!! ({total_time}s)")

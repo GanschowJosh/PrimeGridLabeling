@@ -1,10 +1,6 @@
-try:
-    from prime_tools import coprime
-except ImportError:
-    from Scripts.prime_tools import coprime
-
-# For graphviz
-import subprocess, io
+from Scripts.prime_tools import coprime
+import subprocess, io  # For graphviz
+from typing import Optional
 
 
 class Node:
@@ -16,7 +12,7 @@ class Node:
     """
 
 
-    def __init__(self, neighbors: list["Node"] = None, value: int = None):
+    def __init__(self, neighbors: Optional[list["Node"]] = None, value: Optional[int] = None):
         self.neighbors = neighbors if neighbors is not None else []
         self.value = value
 
@@ -33,7 +29,7 @@ class Node:
         self.value = n
 
 
-    def get_value(self) -> int:
+    def get_value(self) -> int | None:
         return self.value
 
 
@@ -188,7 +184,7 @@ class Graph:
         return "strict graph {\n" + dot_graph + "}"
     
 
-    def gen_svg_graph(self, filename: str, layout_engine: str = "circo") -> str:
+    def gen_svg_graph(self, filename: str = "", layout_engine: str = "circo") -> bytes:
         """
             Returns an svg representation of a the graph as an SVG file
         """
@@ -199,7 +195,7 @@ class Graph:
             Save an SVG representation of the graph to a path
         """
         with open(path, "w") as f:
-            f.write(self.gen_svg_graph(layout_engine=layout_engine))
+            f.write(str(self.gen_svg_graph(layout_engine=layout_engine)))
         
     def show(self, layout_engine: str = "circo"):
         """

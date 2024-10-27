@@ -40,6 +40,13 @@ source primegrid/bin/activate    # ...activate it
 pip install -r requirements.txt  # Install dependencies within your venv
 ```
 
+Compile the Scripts folder using
+> `mypyc Scripts`
+
+Ready to go! run `runner.py`
+Note: As with all compiled programs, you must recompile if you make changes to your programs, such as modifying parameters in `Scripts/generator.py`
+
+
 ## Okay, show me the results!!
 Running `generator.py` is the easiest way to demonstrate this script in action.
 

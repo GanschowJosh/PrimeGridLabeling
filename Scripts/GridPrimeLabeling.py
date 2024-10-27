@@ -1,7 +1,6 @@
 from math import gcd
-import time
-from graph import *
-from prime_tools import most_factors_first
+from Scripts.graph import MatrixGraph
+from Scripts.prime_tools import most_factors_first
 
 
 def is_valid(matrix: MatrixGraph, i: int, j: int, num: int) -> bool:
@@ -82,8 +81,3 @@ def generate_prime_grid(n: int, m: int) -> MatrixGraph | None:
 
     # Wow, we couldn't find a prime-labeled grid?
     return None # if the code reaches this, we're screwed.
-
-
-start = time.perf_counter()
-grid = generate_prime_grid(40, 40)
-print(time.perf_counter() - start)

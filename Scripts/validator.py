@@ -3,7 +3,7 @@ from math import gcd
 FILENAME = "grids/20x20.txt"
 
 
-def get_neighbors(i: int, j: int, rows: int, cols: int) -> list[int]:
+def get_neighbors(i: int, j: int, rows: int, cols: int) -> list[tuple[int, int]]:
     """
     Return the orthogonal neighbors of (i, j)
     """

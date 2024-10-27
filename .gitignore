@@ -1,8 +1,12 @@
-# Compiled files
+# Default compiled files
 Scripts/__pycache__
 Tests/__pycache__
+
+# Mypy compiled files
 .mypy_cache
 build
+*.so
+Scripts/*.so
 
 # IDE folders (VSCode and PyCharm)
 .vscode

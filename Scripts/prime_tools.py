@@ -71,11 +71,11 @@ def coprime(a: int, b: int) -> bool:
     return gcd(a, b) == 1
 
 
-def factors(n: int) -> set[set[int]]:
+def factors(n: int) -> dict[int, set]:
     """
     Returns a set of factors each integer 1...n
     """
-    factors = {i: set() for i in range(1, n + 1)}
+    factors: dict[int, set] = {i: set() for i in range(1, n + 1)}
     for i in range(1, n+1):
         for factor in range(1, int(i ** 0.5) + 1):
             if i % factor == 0:
@@ -85,7 +85,7 @@ def factors(n: int) -> set[set[int]]:
     return factors
 
 
-def num_of_factors(n: int) -> set[set[int]]:
+def num_of_factors(n: int) -> dict[int, int]:
     """
     Returns number of factors of each integer 1...n
     """
@@ -94,7 +94,7 @@ def num_of_factors(n: int) -> set[set[int]]:
     return num_factors
 
 
-def most_factors_first(n: int) -> list[list[int]]:
+def most_factors_first(n: int) -> list[int]:
     """
     Returns a list of integers sorted backwards by how many factors they have.
     This function helps bias generate_prime_grid by trying to choose to get rid of the
